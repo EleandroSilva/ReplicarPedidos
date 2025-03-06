@@ -1,0 +1,219 @@
+23/02/2025 - ===================================================
+23/02/2025 - Form: frmReplicarPedidos
+23/02/2025 - Caption: Replicar Pedidos
+23/02/2025 - Erro: EIBNativeException
+23/02/2025 - Erro: [FireDAC][Phys][FB]Unable to complete network request to host "locahost".
+Failed to locate host machine.
+23/02/2025 - ===================================================
+23/02/2025 - Form: frmReplicarPedidos
+23/02/2025 - Caption: Replicar Pedidos
+23/02/2025 - Erro: EInOutError
+23/02/2025 - Erro: I/O error 105
+23/02/2025 - ===================================================
+23/02/2025 - Form: frmReplicarPedidos
+23/02/2025 - Caption: Replicar Pedidos
+23/02/2025 - Erro: EInOutError
+23/02/2025 - Erro: I/O error 105
+24/02/2025 - ===================================================
+24/02/2025 - Form: frmReplicarPedidos
+24/02/2025 - Caption: Replicar Pedidos
+24/02/2025 - Erro: EInOutError
+24/02/2025 - Erro: I/O error 105
+24/02/2025 - ===================================================
+24/02/2025 - Form: frmReplicarPedidos
+24/02/2025 - Caption: Replicar Pedidos
+24/02/2025 - Erro: EInOutError
+24/02/2025 - Erro: I/O error 105
+24/02/2025 - ===================================================
+24/02/2025 - Form: frmReplicarPedidos
+24/02/2025 - Caption: Replicar Pedidos
+24/02/2025 - Erro: EInOutError
+24/02/2025 - Erro: I/O error 105
+24/02/2025 - ===================================================
+24/02/2025 - Form: frmReplicarPedidos
+24/02/2025 - Caption: Replicar Pedidos
+24/02/2025 - Erro: EIBNativeException
+24/02/2025 - Erro: [FireDAC][Phys][FB]Dynamic SQL Error
+SQL error code = -104
+Unexpected end of command - line 1, column 29
+24/02/2025 - ===================================================
+24/02/2025 - Form: frmReplicarPedidos
+24/02/2025 - Caption: Replicar Pedidos
+24/02/2025 - Erro: EInOutError
+24/02/2025 - Erro: I/O error 105
+24/02/2025 - ===================================================
+24/02/2025 - Form: frmReplicarPedidos
+24/02/2025 - Caption: Replicar Pedidos
+24/02/2025 - Erro: EInOutError
+24/02/2025 - Erro: I/O error 105
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: Field 'valorareceber' not found
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EAccessViolation
+25/02/2025 - Erro: Access violation at address 00C4537E in module 'PReplicarPedidos.exe'. Read of address 00000000
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: Cannot perform this operation on a closed dataset
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: Cannot perform this operation on a closed dataset
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: Cannot perform this operation on a closed dataset
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: Cannot perform this operation on a closed dataset
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EConvertError
+25/02/2025 - Erro: '' is not a valid floating point value
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: cdsPedidoItens: Cannot perform this operation on a closed dataset
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: cdsPedidoItens: Cannot perform this operation on a closed dataset
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: Cannot perform this operation on a closed dataset
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EAccessViolation
+25/02/2025 - Erro: Access violation at address 0065D4D1 in module 'PReplicarPedidos.exe'. Read of address 00000040
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EAccessViolation
+25/02/2025 - Erro: Access violation at address 0065D4D1 in module 'PReplicarPedidos.exe'. Read of address 00000040
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EAccessViolation
+25/02/2025 - Erro: Access violation at address 0065D4D1 in module 'PReplicarPedidos.exe'. Read of address 00000040
+25/02/2025 - ===================================================
+25/02/2025 - Form: frmReplicarPedidos
+25/02/2025 - Caption: Replicar Pedidos
+25/02/2025 - Erro: EDatabaseError
+25/02/2025 - Erro: Cannot perform this operation on a closed dataset
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: Replicar Pedidos
+26/02/2025 - Erro: EDatabaseError
+26/02/2025 - Erro: Field 'id' not found
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: Replicar Pedidos
+26/02/2025 - Erro: EDatabaseError
+26/02/2025 - Erro: Field 'id' not found
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: Replicar Pedidos
+26/02/2025 - Erro: EDatabaseError
+26/02/2025 - Erro: Cannot perform this operation on a closed dataset
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EAccessViolation
+26/02/2025 - Erro: Access violation at address 00C88F37 in module 'PReplicarPedidos.exe'. Read of address 00000040
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EFCreateError
+26/02/2025 - Erro: Cannot create file "C:\resultado.txt". Acesso negado
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EStringListError
+26/02/2025 - Erro: List index out of bounds (1)
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EDatabaseError
+26/02/2025 - Erro: Field 'IDEMPRESA' must have a value
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EDatabaseError
+26/02/2025 - Erro: Field 'IDEMPRESA' must have a value
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EStringListError
+26/02/2025 - Erro: List index out of bounds (56)
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EDatabaseError
+26/02/2025 - Erro: Field 'datacadastro' not found
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EDatabaseError
+26/02/2025 - Erro: ClientDataSet1: Cannot perform this operation on a closed dataset
+26/02/2025 - ===================================================
+26/02/2025 - Form: frmReplicarPedidos
+26/02/2025 - Caption: 
+26/02/2025 - Erro: EDatabaseError
+26/02/2025 - Erro: cdsPedidos: Cannot perform this operation on a closed dataset
+27/02/2025 - ===================================================
+27/02/2025 - Form: frmReplicarPedidos
+27/02/2025 - Caption: 
+27/02/2025 - Erro: EDatabaseError
+27/02/2025 - Erro: cdsPedidoItens: Cannot perform this operation on a closed dataset
+28/02/2025 - ===================================================
+28/02/2025 - Form: frmReplicarPedidos
+28/02/2025 - Caption: 
+28/02/2025 - Erro: EDatabaseError
+28/02/2025 - Erro: cdsPedidoPagamentos: Cannot perform this operation on a closed dataset
+28/02/2025 - ===================================================
+28/02/2025 - Form: frmReplicarPedidos
+28/02/2025 - Caption: 
+28/02/2025 - Erro: EDatabaseError
+28/02/2025 - Erro: Cannot perform this operation on a closed dataset
+28/02/2025 - ===================================================
+28/02/2025 - Form: frmReplicarPedidos
+28/02/2025 - Caption: 
+28/02/2025 - Erro: EDatabaseError
+28/02/2025 - Erro: Field 'liberoucomissao' not found
+28/02/2025 - ===================================================
+28/02/2025 - Form: frmReplicarPedidos
+28/02/2025 - Caption: 
+28/02/2025 - Erro: EDatabaseError
+28/02/2025 - Erro: Field 'volume' not found
+28/02/2025 - ===================================================
+28/02/2025 - Form: frmReplicarPedidos
+28/02/2025 - Caption: 
+28/02/2025 - Erro: EDatabaseError
+28/02/2025 - Erro: Cannot perform this operation on a closed dataset
+06/03/2025 - ===================================================
+06/03/2025 - Form: frmReplicarPedidos
+06/03/2025 - Caption: 
+06/03/2025 - Erro: EDatabaseError
+06/03/2025 - Erro: cdsPedidoPagamentos: Cannot perform this operation on a closed dataset
+06/03/2025 - ===================================================
+06/03/2025 - ===================================================
+06/03/2025 - Form: frmViewPesquisarPessoa_1
+06/03/2025 - Caption: 
+06/03/2025 - Erro: EAccessViolation
+06/03/2025 - Erro: Access violation at address 00C8F469 in module 'PReplicarPedidos.exe'. Read of address 00000064

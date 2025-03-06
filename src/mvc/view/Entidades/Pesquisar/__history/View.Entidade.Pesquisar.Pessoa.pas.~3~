@@ -1,0 +1,25 @@
+unit View.Entidade.Pesquisar.Pessoa;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls;
+
+type
+  TfrmViewPesquisarModelo = class(TForm)
+    pPrincipal: TPanel;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmViewPesquisarModelo: TfrmViewPesquisarModelo;
+
+implementation
+
+{$R *.dfm}
+
+end.
