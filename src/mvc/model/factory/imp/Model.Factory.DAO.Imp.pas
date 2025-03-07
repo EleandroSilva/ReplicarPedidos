@@ -1,5 +1,4 @@
 {*******************************************************}
-{                    API PDV - JSON                     }
 {                      Be More Web                      }
 {          Início do projeto 23/04/2025 12:02           }
 {                 www.bemoreweb.com.br                  }
@@ -16,24 +15,30 @@ uses
   Model.DAO.Pedidos.Interfaces,
   Model.DAO.Pedidos.Itens.Interfaces,
   Model.DAO.Pedidos.Pagamentos.Interfaces,
-  Model.DAO.Pessoa.Interfaces;
+  Model.DAO.Pessoa.Interfaces,
+  Model.DAO.Prazo.Pagamento.Interfaces,
+  Model.DAO.Prazo.Pagamento.Itens.Interfaces;
 
 type
   TFactoryDAO = class(TInterfacedObject, iFactoryDAO)
     private
-      FDAOPedidos           : iDAOPedidos;
-      FDAOPedidosItens      : iDAOPedidosItens;
-      FDAOPedidosPagamentos : iDAOPedidosPagamentos;
-      FDAOPessoa            : iDAOPessoa;
+      FDAOPedidos             : iDAOPedidos;
+      FDAOPedidosItens        : iDAOPedidosItens;
+      FDAOPedidosPagamentos   : iDAOPedidosPagamentos;
+      FDAOPessoa              : iDAOPessoa;
+      FDAOPrazoPagamento      : iDAOPrazoPagamento;
+      FDAOPrazoPagamentoItens : iDAOPrazoPagamentoItens;
     public
       constructor Create;
       destructor Destroy; override;
       class function New : iFactoryDAO;
 
-      function DAOPedidos           : iDAOPedidos;
-      function DAOPedidosItens      : iDAOPedidosItens;
-      function DAOPedidosPagamentos : iDAOPedidosPagamentos;
-      function DAOPessoa            : iDAOPessoa;
+      function DAOPedidos             : iDAOPedidos;
+      function DAOPedidosItens        : iDAOPedidosItens;
+      function DAOPedidosPagamentos   : iDAOPedidosPagamentos;
+      function DAOPessoa              : iDAOPessoa;
+      function DAOPrazoPagamento      : iDAOPrazoPagamento;
+      function DAOPrazoPagamentoItens : iDAOPrazoPagamentoItens;
   end;
 
 implementation
@@ -42,7 +47,9 @@ uses
   Model.DAO.Pedidos.Imp,
   Model.DAO.Pedidos.Itens.Imp,
   Model.DAO.Pedidos.Pagamentos.Imp,
-  Model.DAO.Pessoa.Imp;
+  Model.DAO.Pessoa.Imp,
+  Model.DAO.Prazo.Pagamento.Imp,
+  Model.DAO.Prazo.Pagamento.Itens.Imp;
 
 { TFactoryDAO }
 
@@ -92,6 +99,22 @@ begin
     FDAOPessoa := TDAOPessoa.New;
 
   Result := FDAOPessoa;
+end;
+
+function TFactoryDAO.DAOPrazoPagamento: iDAOPrazoPagamento;
+begin
+  if not Assigned(FDAOPrazoPagamento) then
+    FDAOPrazoPagamento := TDAOPrazoPagamento.New;
+
+  Result := FDAOPrazoPagamento;
+end;
+
+function TFactoryDAO.DAOPrazoPagamentoItens: iDAOPrazoPagamentoItens;
+begin
+  if not Assigned(FDAOPrazoPagamentoItens) then
+    FDAOPrazoPagamentoItens := TDAOPrazoPagamentoItens.New;
+
+  Result := FDAOPrazoPagamentoItens;
 end;
 
 end.

@@ -24,7 +24,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitHeight = 515
     object PPedidos: TPanel
       Left = 0
       Top = 67
@@ -245,11 +244,10 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 489
         object lPedidos: TLabel
           Left = 497
           Top = 0
-          Width = 106
+          Width = 93
           Height = 41
           Align = alLeft
           Alignment = taCenter
@@ -260,18 +258,16 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           Font.Name = 'Teko SemiBold'
           Font.Style = [fsBold]
           ParentFont = False
-          ExplicitLeft = 448
-          ExplicitTop = 2
+          ExplicitHeight = 39
         end
         object Panel2: TPanel
-          Left = 603
+          Left = 590
           Top = 0
           Width = 521
           Height = 41
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitLeft = 0
           object btnNovoRepresentante: TBitBtn
             Left = 6
             Top = 0
@@ -282,7 +278,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             TabOrder = 0
             Visible = False
             OnClick = btnNovoRepresentanteClick
-            ExplicitLeft = 0
           end
           object pRepresentante: TPanel
             Left = 135
@@ -368,7 +363,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             ParentBackground = False
             TabOrder = 1
             Visible = False
-            ExplicitWidth = 401
             object Label12: TLabel
               Left = 4
               Top = 1
@@ -423,7 +417,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitHeight = 239
       object lPedidoItens: TLabel
         Left = 0
         Top = 0
@@ -473,7 +466,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitHeight = 239
       object Label2: TLabel
         Left = 0
         Top = 0
@@ -522,7 +514,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       Color = clBackground
       ParentBackground = False
       TabOrder = 3
-      ExplicitHeight = 239
     end
     object Panel1: TPanel
       Left = 0
@@ -534,7 +525,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       Color = 14778398
       ParentBackground = False
       TabOrder = 4
-      ExplicitTop = 472
       object Label1: TLabel
         Left = 244
         Top = 0
@@ -850,8 +840,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         ParentColor = False
         ParentFont = False
         TabOrder = 3
-        ExplicitLeft = -6
-        ExplicitTop = -6
       end
     end
   end
@@ -890,8 +878,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           '98169-5336-WhatsApp'
         Width = 300
       end>
-    ExplicitLeft = -65
-    ExplicitWidth = 1189
   end
   object dsPedidos: TDataSource
     DataSet = cdsPedidos

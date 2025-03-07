@@ -1,7 +1,0 @@
-unit Model.Entidade.Pedidos.Itens.Interfaces;
-
-interface
-
-implementation
-
-end.

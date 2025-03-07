@@ -1,5 +1,4 @@
 {*******************************************************}
-{                    API PDV - JSON                     }
 {                      Be More Web                      }
 {          Início do projeto 23/04/2025 12:02           }
 {                 www.bemoreweb.com.br                  }
@@ -887,11 +886,23 @@ begin
 end;
 
 procedure TfrmReplicarPedidos.PostPedidoPagamentos;
+var
+  lDataVencimento : TDateTime;
 begin
   cdsPedidoPagamentos.First;
   try
     while not cdsPedidoPagamentos.Eof do
     begin
+     lDataVencimento := FController
+                         .FactoryDAO
+                           .DAOPrazoPagamentoItens
+                             .This
+                               .Id(cdsPedidoPagamentos.FieldByName('IdPagamento').AsString)
+                               .NumeroPagamento(cdsPedidoPagamentos.FieldByName('NumeroPagamento').AsInteger)
+                               .&End
+                             .GetbyIdDataCalculada
+                             .This
+                               .DataCalculada;
       FController
         .FactoryDAO
           .DAOPedidosPagamentos
@@ -902,7 +913,7 @@ begin
               .IdPagamento        (cdsPedidoPagamentos.FieldByName('IdPagamento')        .AsString)
               .Item               (cdsPedidoPagamentos.FieldByName('Item')               .AsInteger)
               .NumeroPagamento    (cdsPedidoPagamentos.FieldByName('NumeroPagamento')    .AsInteger)
-              .DataVencimento     (cdsPedidoPagamentos.FieldByName('DataVencimento')     .AsDateTime)
+              .DataVencimento     (lDataVencimento)
               .ParcelaNova        (cdsPedidoPagamentos.FieldByName('ParcelaNova')        .AsString)
               .EmitiuBoleto       (cdsPedidoPagamentos.FieldByName('EmitiuBoleto')       .AsString)
               .NumeroBanco        (cdsPedidoPagamentos.FieldByName('NumeroBanco')        .AsString)

@@ -1,7 +1,6 @@
 {*******************************************************}
-{                    API PDV - JSON                     }
 {                      Be More Web                      }
-{          Início do projeto 06/03/2025 14:22           }
+{          Início do projeto 23/04/2025 12:02           }
 {                 www.bemoreweb.com.br                  }
 {                     (17)98169-5336                    }
 {                        2003/2025                      }

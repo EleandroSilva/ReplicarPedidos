@@ -1,3 +1,11 @@
+{*******************************************************}
+{                      Be More Web                      }
+{            Início do projeto 27/05/2023               }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2023                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
 unit Uteis.Interfaces;
 
 interface

@@ -1,7 +1,6 @@
 {*******************************************************}
-{                    API PDV - JSON                     }
 {                      Be More Web                      }
-{          Início do projeto 22/02/2025 08:44           }
+{          Início do projeto 23/04/2025 12:02           }
 {                 www.bemoreweb.com.br                  }
 {                     (17)98169-5336                    }
 {                        2003/2025                      }
@@ -156,7 +155,9 @@ begin
     FDataSet := FQuery
                   .SQL(FSQL)
                     .Add('where pgto.idpedido=:Idpedido')
+                    .Add('and pgto.ll=:LL')
                     .Params('Idpedido', Id)
+                    .Params('LL', 'P')
                   .Open
                   .DataSet;
   if not FDataSet.IsEmpty then

@@ -32,7 +32,15 @@ uses
   Model.Entidade.Pessoa.Imp in 'src\mvc\model\entidade\imp\Model.Entidade.Pessoa.Imp.pas',
   Model.DAO.Pessoa.Interfaces in 'src\mvc\model\DAO\interfaces\Model.DAO.Pessoa.Interfaces.pas',
   Model.DAO.Pessoa.Imp in 'src\mvc\model\DAO\imp\Model.DAO.Pessoa.Imp.pas',
-  View.Entidade.Pesquisar.Pessoa in 'src\mvc\view\Entidades\Pesquisar\View.Entidade.Pesquisar.Pessoa.pas' {frmViewPesquisarPessoa};
+  View.Entidade.Pesquisar.Pessoa in 'src\mvc\view\Entidades\Pesquisar\View.Entidade.Pesquisar.Pessoa.pas' {frmViewPesquisarPessoa},
+  Model.Entidade.Prazo.Pagamento.Interfaces in 'src\mvc\model\entidade\interfaces\Model.Entidade.Prazo.Pagamento.Interfaces.pas',
+  Model.Entidade.Prazo.Pagamento.Itens.Interfaces in 'src\mvc\model\entidade\interfaces\Model.Entidade.Prazo.Pagamento.Itens.Interfaces.pas',
+  Model.Entidade.Prazo.Pagamento.Imp in 'src\mvc\model\entidade\imp\Model.Entidade.Prazo.Pagamento.Imp.pas',
+  Model.Entidade.Prazo.Pagamento.Itens.Imp in 'src\mvc\model\entidade\imp\Model.Entidade.Prazo.Pagamento.Itens.Imp.pas',
+  Model.DAO.Prazo.Pagamento.Interfaces in 'src\mvc\model\DAO\interfaces\Model.DAO.Prazo.Pagamento.Interfaces.pas',
+  Model.DAO.Prazo.Pagamento.Itens.Interfaces in 'src\mvc\model\DAO\interfaces\Model.DAO.Prazo.Pagamento.Itens.Interfaces.pas',
+  Model.DAO.Prazo.Pagamento.Imp in 'src\mvc\model\DAO\imp\Model.DAO.Prazo.Pagamento.Imp.pas',
+  Model.DAO.Prazo.Pagamento.Itens.Imp in 'src\mvc\model\DAO\imp\Model.DAO.Prazo.Pagamento.Itens.Imp.pas';
 
 {$R *.res}
 

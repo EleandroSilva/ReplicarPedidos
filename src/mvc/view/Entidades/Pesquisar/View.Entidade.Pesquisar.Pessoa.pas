@@ -1,3 +1,11 @@
+{*******************************************************}
+{                      Be More Web                      }
+{            Início do projeto 06/03/2025               }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
 unit View.Entidade.Pesquisar.Pessoa;
 
 interface

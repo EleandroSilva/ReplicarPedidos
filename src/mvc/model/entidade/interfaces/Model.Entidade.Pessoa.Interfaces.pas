@@ -1,5 +1,4 @@
 {*******************************************************}
-{                    API PDV - JSON                     }
 {                      Be More Web                      }
 {          Início do projeto 26/02/2025 17:02           }
 {                 www.bemoreweb.com.br                  }

@@ -1,0 +1,41 @@
+unit Model.Entidade.Prazo.Pagamento.Itens.Imp;
+
+interface
+
+uses
+  Model.Entidade.Prazo.Pagamento.Itens.Interfaces;
+
+type
+  TEntidadePrazoPagamentoItens <T : iInterface> = class(TInterfacedObject, iEntidadePrazoPagamentoItens<T>)
+    private
+      [weak]
+      FParent : T;
+    public
+      constructor Create(Parent : T);
+      destructor Destroy; override;
+      class function New(Parent : T) : iEntidadePrazoPagamentoItens<T>;
+
+  end;
+
+implementation
+
+{ TEntidadePrazoPagamentoItens<T> }
+
+constructor TEntidadePrazoPagamentoItens<T>.Create(Parent: T);
+begin
+
+end;
+
+destructor TEntidadePrazoPagamentoItens<T>.Destroy;
+begin
+
+  inherited;
+end;
+
+class function TEntidadePrazoPagamentoItens<T>.New(
+  Parent: T): iEntidadePrazoPagamentoItens<T>;
+begin
+
+end;
+
+end.
