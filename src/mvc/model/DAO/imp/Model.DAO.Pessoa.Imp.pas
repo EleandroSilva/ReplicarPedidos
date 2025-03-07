@@ -34,7 +34,8 @@ type
       FSQL=('select '+
             'p.id           as Id, '+
             'p.razao_social as NomePessoa, '+
-            '  case p.f_j when ''J'' then p.cnpj else p.cpf '+
+            '  case p.f_j when ''J'' then p.cnpj else p.cpf, '+
+            'p.cod_rep     as IdRepresentante '+
             'end            CNPJCPF '+
             'from cad_cli p '
            );
@@ -192,7 +193,7 @@ begin
     on E: Exception do
     begin
       FPessoa.Id(0);
-      ShowMessage('Erro no TDAOPedidos.GetbyParams - ao tentar encontrar pedido por nomepessoa: ' + E.Message);
+      ShowMessage('Erro no TDAOPessoa.GetbyParams - ao tentar encontrar pedido por nomepessoa: ' + E.Message);
       Abort;
     end;
   end;

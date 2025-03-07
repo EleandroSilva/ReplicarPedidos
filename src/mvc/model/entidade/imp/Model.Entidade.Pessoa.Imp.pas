@@ -23,6 +23,7 @@ type
       FId         : Integer;
       FNomePessoa : String;
       FCNPJCPF    : String;
+      FIdRepresentante : String;
     public
       constructor Create(Parent : T);
       destructor Destroy; override;
@@ -34,6 +35,8 @@ type
       function NomePessoa                  : String;             overload;
       function CNPJCPF   (Value : String)  : iEntidadePessoa<T>; overload;
       function CNPJCPF                     : String;             overload;
+      function IdRepresentante(Value : String) : iEntidadePessoa<T>; overload;
+      function IdRepresentante                 : String;             overload;
 
       function &End : T;
   end;
@@ -88,6 +91,17 @@ end;
 function TEntidadePessoa<T>.CNPJCPF: String;
 begin
   Result := FCNPJCPF;
+end;
+
+function TEntidadePessoa<T>.IdRepresentante(Value: String): iEntidadePessoa<T>;
+begin
+  Result := Self;
+  FIdRepresentante := Value;
+end;
+
+function TEntidadePessoa<T>.IdRepresentante: String;
+begin
+  Result := FIdRepresentante;
 end;
 
 function TEntidadePessoa<T>.&End: T;

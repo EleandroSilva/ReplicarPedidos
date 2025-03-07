@@ -10,7 +10,8 @@ unit Model.Entidade.Prazo.Pagamento.Itens.Imp;
 interface
 
 uses
-  Model.Entidade.Prazo.Pagamento.Itens.Interfaces;
+  Model.Entidade.Prazo.Pagamento.Itens.Interfaces,
+  Model.Entidade.Pedidos.Interfaces;
 
 type
   TEntidadePrazoPagamentoItens <T : iInterface> = class(TInterfacedObject, iEntidadePrazoPagamentoItens<T>)
@@ -21,7 +22,8 @@ type
       FItem   : Integer;
       FNumeroPagamento  : Integer;
       FQuantidadedeDias : Integer;
-      FDataCalculada    : TDateTime;
+      FDataVencimento   : TDateTime;
+      FPedidos  : iEntidadePedidos<iEntidadePrazoPagamentoItens<T>>;
     public
       constructor Create(Parent : T);
       destructor Destroy; override;
@@ -35,18 +37,24 @@ type
       function NumeroPagamento                     : Integer;                         overload;
       function QuantidadedeDias(Value : Integer)   : iEntidadePrazoPagamentoItens<T>; overload;
       function QuantidadedeDias                    : Integer;                         overload;
-      function DataCalculada   (Value : TDateTime) :iEntidadePrazoPagamentoItens<T>;  overload;
-      function DataCalculada                       : TDateTime;                       overload;
+      function DataVencimento  (Value : TDateTime) :iEntidadePrazoPagamentoItens<T>;  overload;
+      function DataVencimento                      : TDateTime;                       overload;
       function &End : T;
+
+      function Pedidos  : iEntidadePedidos<iEntidadePrazoPagamentoItens<T>>;
   end;
 
 implementation
+
+uses
+  Model.Entidade.Pedidos.Imp;
 
 { TEntidadePrazoPagamentoItens<T> }
 
 constructor TEntidadePrazoPagamentoItens<T>.Create(Parent: T);
 begin
   FParent := Parent;
+  FPedidos := TEntidadePedidos<iEntidadePrazoPagamentoItens<T>>.New(Self);
 end;
 
 destructor TEntidadePrazoPagamentoItens<T>.Destroy;
@@ -103,15 +111,15 @@ begin
   Result := QuantidadedeDias;
 end;
 
-function TEntidadePrazoPagamentoItens<T>.DataCalculada(Value: TDateTime): iEntidadePrazoPagamentoItens<T>;
+function TEntidadePrazoPagamentoItens<T>.DataVencimento(Value: TDateTime): iEntidadePrazoPagamentoItens<T>;
 begin
   Result := Self;
-  FDataCalculada := Value;
+  FDataVencimento := Value;
 end;
 
-function TEntidadePrazoPagamentoItens<T>.DataCalculada: TDateTime;
+function TEntidadePrazoPagamentoItens<T>.DataVencimento: TDateTime;
 begin
-  Result := FDataCalculada;
+  Result := FDataVencimento;
 end;
 
 function TEntidadePrazoPagamentoItens<T>.&End: T;
@@ -119,4 +127,9 @@ begin
   Result := FParent;
 end;
 
+//Injeção de depêndencia
+function TEntidadePrazoPagamentoItens<T>.Pedidos: iEntidadePedidos<iEntidadePrazoPagamentoItens<T>>;
+begin
+  Result := FPedidos;
+end;
 end.

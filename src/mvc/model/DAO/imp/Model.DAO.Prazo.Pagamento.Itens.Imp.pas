@@ -30,9 +30,14 @@ type
         FSQL =('select * from cad_item_prazo ipp '
               );
 
-        FCalcularDataVencimento=('select ipp.*, '+
-                        'DATEADD(ipp.qtde_dias DAY TO CURRENT_DATE) as DataCalculada '+
-                        'from cad_item_prazo ipp ');
+        FCalcularDataVencimento=('select '+
+                                 'ipp.codigo    as IdPagamento, '+
+                                 'ipp.num_pgto  as NumeroPagamento, '+
+                                 'ipp.qtde_dias as QuantidadedeDias, '+
+                                 'CURRENT_DATE  as DataAtual, '+
+                                 'DATEADD(ipp.qtde_dias DAY TO CURRENT_DATE) as DataVencimento '+
+                                 'from cad_item_prazo ipp '+
+                                 'inner join cad_prazo p on p.cod_prazo = ipp.codigo ');
     public
       constructor Create;
       destructor Destroy; override;
@@ -111,18 +116,18 @@ end;
 
 function TDAOPrazoPagamentoItens.GetbyIdDataCalculada : iDAOPrazoPagamentoItens;
 begin
-    Result := Self;
+  Result := Self;
   try
     FDataSet := FQuery
                   .SQL(FCalcularDataVencimento)
                     .Add('where ipp.codigo=:Id')
-                    .Add('and ipp.num_pgto=:NumeroPagamento')
+                    //.Add('and ipp.num_pgto=:NumeroPagamento')
                     .Params('Id', FPrazoPagamentoItens.Id)
-                    .Params('NumeroPagamento', FPrazoPagamentoItens.NumeroPagamento)
+                    //.Params('NumeroPagamento', FPrazoPagamentoItens.NumeroPagamento)
                   .Open
                   .DataSet;
   if not FDataSet.IsEmpty then
-    FPrazoPagamentoItens.DataCalculada(FDataSet.FieldByName('DataCalculada').AsDateTime)
+    FPrazoPagamentoItens.DataVencimento(FDataSet.FieldByName('DataVencimento').AsDateTime)
     else
     ShowMessage('Registro não encontrado!');
   except

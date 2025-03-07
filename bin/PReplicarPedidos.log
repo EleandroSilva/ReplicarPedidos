@@ -217,3 +217,23 @@ Unexpected end of command - line 1, column 29
 06/03/2025 - Caption: 
 06/03/2025 - Erro: EAccessViolation
 06/03/2025 - Erro: Access violation at address 00C8F469 in module 'PReplicarPedidos.exe'. Read of address 00000064
+06/03/2025 - ===================================================
+06/03/2025 - Form: frmReplicarPedidos
+06/03/2025 - Caption: 
+06/03/2025 - Erro: EAccessViolation
+06/03/2025 - Erro: Access violation at address 00C9AA56 in module 'PReplicarPedidos.exe'. Read of address 00000000
+07/03/2025 - ===================================================
+07/03/2025 - Form: frmReplicarPedidos
+07/03/2025 - Caption: 
+07/03/2025 - Erro: EDatabaseError
+07/03/2025 - Erro: Field 'TotalPedido' not found
+07/03/2025 - ===================================================
+07/03/2025 - Form: frmReplicarPedidos
+07/03/2025 - Caption: 
+07/03/2025 - Erro: EInvalidOperation
+07/03/2025 - Erro: Cannot focus a disabled or invisible window
+07/03/2025 - ===================================================
+07/03/2025 - Form: frmViewPesquisarPagamento
+07/03/2025 - Caption: frmViewPesquisarPagamento
+07/03/2025 - Erro: EDatabaseError
+07/03/2025 - Erro: Field 'IdPagamento' not found

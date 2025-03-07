@@ -9,6 +9,9 @@ unit Model.Entidade.Prazo.Pagamento.Itens.Interfaces;
 
 interface
 
+uses
+  Model.Entidade.Pedidos.Interfaces;
+
 type
   iEntidadePrazoPagamentoItens<T> = interface
     ['{094F4D84-3EBD-4B5C-8166-238B5539E7A8}']
@@ -20,10 +23,12 @@ type
     function NumeroPagamento                     : Integer;                         overload;
     function QuantidadedeDias(Value : Integer)   : iEntidadePrazoPagamentoItens<T>; overload;
     function QuantidadedeDias                    : Integer;                         overload;
-    function DataCalculada   (Value : TDateTime) :iEntidadePrazoPagamentoItens<T>;  overload;
-    function DataCalculada                       : TDateTime;                       overload;
+    function DataVencimento  (Value : TDateTime) :iEntidadePrazoPagamentoItens<T>;  overload;
+    function DataVencimento                      : TDateTime;                       overload;
 
     function &End : T;
+    //Injeção de dependência
+    function Pedidos  : iEntidadePedidos<iEntidadePrazoPagamentoItens<T>>;
   end;
 
 implementation

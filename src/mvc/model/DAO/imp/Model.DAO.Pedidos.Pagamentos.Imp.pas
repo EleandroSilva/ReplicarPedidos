@@ -298,7 +298,7 @@ begin
       .Params('valortotal'          , FPedidosPagamentos.ValorTotal)
       .Params('valorparcela'        , FPedidosPagamentos.ValorParcela)
       .Params('quantidadededias'    , FPedidosPagamentos.QuantidadedeDias)
-      .Params('pagoucomo'           , FPedidosPagamentos.PagouComo)
+      .Params('pagoucomo'           , FPedidosPagamentos.PagoCom)
       .Params('pagoucomissao'       , FPedidosPagamentos.PagouComissao)
       .Params('liberoucomissao'     , FPedidosPagamentos.LiberouComissao)
       .Params('ocorrenciabanco'     , FPedidosPagamentos.OcorrenciaBanco)

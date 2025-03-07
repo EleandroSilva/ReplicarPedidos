@@ -17,28 +17,31 @@ uses
   Model.DAO.Pedidos.Pagamentos.Interfaces,
   Model.DAO.Pessoa.Interfaces,
   Model.DAO.Prazo.Pagamento.Interfaces,
-  Model.DAO.Prazo.Pagamento.Itens.Interfaces;
+  Model.DAO.Prazo.Pagamento.Itens.Interfaces,
+  Model.DAO.Calcular.Valor.Parcela.Interfaces;
 
 type
   TFactoryDAO = class(TInterfacedObject, iFactoryDAO)
     private
-      FDAOPedidos             : iDAOPedidos;
-      FDAOPedidosItens        : iDAOPedidosItens;
-      FDAOPedidosPagamentos   : iDAOPedidosPagamentos;
-      FDAOPessoa              : iDAOPessoa;
-      FDAOPrazoPagamento      : iDAOPrazoPagamento;
-      FDAOPrazoPagamentoItens : iDAOPrazoPagamentoItens;
+      FDAOPedidos              : iDAOPedidos;
+      FDAOPedidosItens         : iDAOPedidosItens;
+      FDAOPedidosPagamentos    : iDAOPedidosPagamentos;
+      FDAOPessoa               : iDAOPessoa;
+      FDAOPrazoPagamento       : iDAOPrazoPagamento;
+      FDAOPrazoPagamentoItens  : iDAOPrazoPagamentoItens;
+      FDAOCalcularValorParcela : iDAOCalcularValorParcela;
     public
       constructor Create;
       destructor Destroy; override;
       class function New : iFactoryDAO;
 
-      function DAOPedidos             : iDAOPedidos;
-      function DAOPedidosItens        : iDAOPedidosItens;
-      function DAOPedidosPagamentos   : iDAOPedidosPagamentos;
-      function DAOPessoa              : iDAOPessoa;
-      function DAOPrazoPagamento      : iDAOPrazoPagamento;
-      function DAOPrazoPagamentoItens : iDAOPrazoPagamentoItens;
+      function DAOPedidos              : iDAOPedidos;
+      function DAOPedidosItens         : iDAOPedidosItens;
+      function DAOPedidosPagamentos    : iDAOPedidosPagamentos;
+      function DAOPessoa               : iDAOPessoa;
+      function DAOPrazoPagamento       : iDAOPrazoPagamento;
+      function DAOPrazoPagamentoItens  : iDAOPrazoPagamentoItens;
+      function DAOCalcularValorParcela : iDAOCalcularValorParcela;
   end;
 
 implementation
@@ -49,7 +52,8 @@ uses
   Model.DAO.Pedidos.Pagamentos.Imp,
   Model.DAO.Pessoa.Imp,
   Model.DAO.Prazo.Pagamento.Imp,
-  Model.DAO.Prazo.Pagamento.Itens.Imp;
+  Model.DAO.Prazo.Pagamento.Itens.Imp,
+  Mmodel.DAO.Calcular.Valor.Parcela.Imp;
 
 { TFactoryDAO }
 
@@ -67,7 +71,6 @@ class function TFactoryDAO.New: iFactoryDAO;
 begin
   Result := Self.Create;
 end;
-
 
 function TFactoryDAO.DAOPedidos: iDAOPedidos;
 begin
@@ -115,6 +118,14 @@ begin
     FDAOPrazoPagamentoItens := TDAOPrazoPagamentoItens.New;
 
   Result := FDAOPrazoPagamentoItens;
+end;
+
+function TFactoryDAO.DAOCalcularValorParcela: iDAOCalcularValorParcela;
+begin
+  if not Assigned(FDAOCalcularValorParcela) then
+    FDAOCalcularValorParcela := TDAOCalcularValorParcela.New;
+
+  Result := FDAOCalcularValorParcela;
 end;
 
 end.

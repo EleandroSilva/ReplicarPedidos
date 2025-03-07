@@ -16,17 +16,19 @@ uses
   Model.DAO.Pedidos.Pagamentos.Interfaces,
   Model.DAO.Pessoa.Interfaces,
   Model.DAO.Prazo.Pagamento.Interfaces,
-  Model.DAO.Prazo.Pagamento.Itens.Interfaces;
+  Model.DAO.Prazo.Pagamento.Itens.Interfaces,
+  Model.DAO.Calcular.Valor.Parcela.Interfaces;
 
 type
   iFactoryDAO = interface
     ['{D4B77362-B351-4C89-A8E4-0A5B57CB0AFF}']
-    function DAOPedidos             : iDAOPedidos;
-    function DAOPedidosItens        : iDAOPedidosItens;
-    function DAOPedidosPagamentos   : iDAOPedidosPagamentos;
-    function DAOPessoa              : iDAOPessoa;
-    function DAOPrazoPagamento      : iDAOPrazoPagamento;
-    function DAOPrazoPagamentoItens : iDAOPrazoPagamentoItens;
+    function DAOPedidos              : iDAOPedidos;
+    function DAOPedidosItens         : iDAOPedidosItens;
+    function DAOPedidosPagamentos    : iDAOPedidosPagamentos;
+    function DAOPessoa               : iDAOPessoa;
+    function DAOPrazoPagamento       : iDAOPrazoPagamento;
+    function DAOPrazoPagamentoItens  : iDAOPrazoPagamentoItens;
+    function DAOCalcularValorParcela : iDAOCalcularValorParcela;
   end;
 
 

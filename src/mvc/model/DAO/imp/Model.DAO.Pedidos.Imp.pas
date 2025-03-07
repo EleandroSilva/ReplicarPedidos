@@ -70,6 +70,22 @@ type
             'p.conferido, '+
             'p.tipo              as tipopedido, '+
             'p.tipo_pgto         as tipopagamento, '+
+            'case p.tipo_pgto '+
+            'when  0 then ''D'' '+
+            'when  1 then ''C'' '+
+            'when  2 then ''B'' '+
+            'when  3 then ''F'' '+
+            'when  4 then ''V'' '+
+            'when  5 then ''1'' '+
+            'when  6 then ''3'' '+
+            'when  7 then ''4'' '+
+            'when  8 then ''5'' '+
+            'when  9 then ''6'' '+
+            'when 10 then ''7'' '+
+            'when 11 then ''8'' '+
+            'when 12 then ''P'' '+
+            'when 13 then ''9'' '+
+            'end as PagCom, '+
             'p.tomada            as tomadanfe, '+
             'p.perc_com          as aliquotacomissao, '+
             'p.perc_desc         as aliquotadesconto, '+

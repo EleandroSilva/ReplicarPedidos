@@ -72,7 +72,8 @@ var
 implementation
 
 uses
-  Controller.Imp, ReplicarPedidos;
+  Controller.Imp,
+  ReplicarPedidos;
 
 {$R *.dfm}
 

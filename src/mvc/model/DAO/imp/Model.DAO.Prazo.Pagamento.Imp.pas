@@ -25,10 +25,10 @@ type
       FConexao        : iConexao;
       FDataSet        : TDataSet;
       FQuery          : iQuery;
-
       const
         FSQL =('select * from cad_prazo pp '
               );
+      function OrderBy : String;
     public
       constructor Create;
       destructor Destroy; override;
@@ -36,7 +36,9 @@ type
 
       function DataSet    (DataSource : TDataSource) : iDAOPrazoPagamento; overload;
       function DataSet                               : TDataSet;           overload;
+      function GetAll                                : iDAOPrazoPagamento;
       function GetbyId    (Id : Variant)             : iDAOPrazoPagamento;
+      function GetbyParams(NomePagamento : String)   : iDAOPrazoPagamento;
 
       function This : iEntidadePrazoPagamento<iDAOPrazoPagamento>;
   end;
@@ -67,6 +69,11 @@ begin
   Result := Self.Create;
 end;
 
+function TDAOPrazoPagamento.OrderBy: String;
+begin
+  Result := 'order by descricao ';
+end;
+
 function TDAOPrazoPagamento.DataSet(DataSource: TDataSource): iDAOPrazoPagamento;
 begin
   Result := Self;
@@ -79,6 +86,32 @@ end;
 function TDAOPrazoPagamento.DataSet: TDataSet;
 begin
   Result := FDataSet;
+end;
+
+function TDAOPrazoPagamento.GetAll: iDAOPrazoPagamento;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                  .SQL(FSQL)
+                  .Add(OrderBy)
+                  .Open
+                  .DataSet;
+
+  if not FDataSet.IsEmpty then
+  begin
+    FPrazoPagamento.Id(FDataSet.FieldByName('id').AsInteger);
+  end
+  else
+    ShowMessage('Registro não encontrado!');
+  except
+    on E: Exception do
+    begin
+      FConexao.Rollback;
+      FPrazoPagamento.Id(0);
+      Abort;
+    end;
+  end;
 end;
 
 function TDAOPrazoPagamento.GetbyId(Id: Variant): iDAOPrazoPagamento;
@@ -99,6 +132,33 @@ begin
     on E: Exception do
     begin
       FPrazoPagamento.Id(0);
+      Abort;
+    end;
+  end;
+end;
+
+function TDAOPrazoPagamento.GetbyParams(NomePagamento: String): iDAOPrazoPagamento;
+begin
+  Result := Self;
+  try
+    FDataSet := FQuery
+                  .SQL(FSQL)
+                  .Add('where upper(pp.descricao) like :NomePagamento')
+                  .Params('NomePagamento', '%' + UpperCase(NomePagamento) + '%')
+                  .Open
+                  .DataSet;
+
+  if not FDataSet.IsEmpty then
+  begin
+    FPrazoPagamento.Id(FDataSet.FieldByName('id').AsInteger);
+  end
+  else
+    ShowMessage('Registro não encontrado!');
+  except
+    on E: Exception do
+    begin
+      FPrazoPagamento.Id(0);
+      ShowMessage('Erro no TDAOPrazoPagamento.GetbyParams - ao tentar encontrar pedido por NomePamento: ' + E.Message);
       Abort;
     end;
   end;

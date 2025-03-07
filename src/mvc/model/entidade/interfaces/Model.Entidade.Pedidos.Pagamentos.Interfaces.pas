@@ -42,8 +42,8 @@ type
     function ValorParcela                           : Currency;                      overload;
     function QuantidadedeDias   (Value : Integer)   : iEntidadePedidosPagamentos<T>; overload;
     function QuantidadedeDias                       : Integer;                       overload;
-    function PagouComo          (Value : String)    : iEntidadePedidosPagamentos<T>; overload;
-    function PagouComo                              : String;                        overload;
+    function PagoCom            (Value : String)    : iEntidadePedidosPagamentos<T>; overload;
+    function PagoCom                                : String;                        overload;
     function PagouComissao      (Value : String)    : iEntidadePedidosPagamentos<T>; overload;
     function PagouComissao                          : String;                        overload;
     function LiberouComissao    (Value : String)    : iEntidadePedidosPagamentos<T>; overload;

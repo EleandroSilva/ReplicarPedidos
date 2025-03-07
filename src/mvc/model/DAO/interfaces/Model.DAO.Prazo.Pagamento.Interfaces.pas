@@ -19,8 +19,9 @@ type
     ['{8931DBB4-EF49-4736-BF00-E23C5BD4A6E7}']
     function DataSet    (DataSource : TDataSource) : iDAOPrazoPagamento; overload;
     function DataSet                               : TDataSet;           overload;
+    function GetAll                                : iDAOPrazoPagamento;
     function GetbyId    (Id : Variant)             : iDAOPrazoPagamento;
-
+    function GetbyParams(NomePagamento : String)   : iDAOPrazoPagamento;
     function This : iEntidadePrazoPagamento<iDAOPrazoPagamento>;
   end;
 

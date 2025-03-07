@@ -1,4 +1,4 @@
-echo "# ReplicarPedidos" >> README.md
+git adecho "# ReplicarPedidos" >> README.md
 git init
 git add README.md
 git commit -m "first commit"

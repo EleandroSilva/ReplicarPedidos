@@ -185,22 +185,6 @@ type
     lQuantidadeRegistro: TLabel;
     Label8: TLabel;
     Logo: TStatusBar;
-    pNovoCliente_Representante: TPanel;
-    lPedidos: TLabel;
-    Panel2: TPanel;
-    btnNovoRepresentante: TBitBtn;
-    pRepresentante: TPanel;
-    Label9: TLabel;
-    Label10: TLabel;
-    Label11: TLabel;
-    edtNovoRepresentante: TEdit;
-    Panel4: TPanel;
-    btnNovoCliente: TBitBtn;
-    pPessoa: TPanel;
-    Label12: TLabel;
-    lNomeCliente: TLabel;
-    Label14: TLabel;
-    edtNovoCliente: TEdit;
     cdsPedidoPagamentos: TClientDataSet;
     cdsPedidoPagamentosIdPedido: TIntegerField;
     cdsPedidoPagamentosIdPed: TIntegerField;
@@ -224,6 +208,24 @@ type
     cdsPedidoPagamentosObsPagamento: TStringField;
     cdsPedidoPagamentosDescontado: TStringField;
     cdsPedidoPagamentosEnviadoParaCartorio: TStringField;
+    dsPessoa: TDataSource;
+    pNovoCliente_Representante: TPanel;
+    Panel2: TPanel;
+    btnNovoPagamento: TBitBtn;
+    Panel4: TPanel;
+    btnNovoCliente: TBitBtn;
+    pNovoCliente: TPanel;
+    lIdNovoCliente: TLabel;
+    lNomeNovoCliente: TLabel;
+    lNomeCliente: TLabel;
+    edtNovoCliente: TEdit;
+    pNovoPagamento: TPanel;
+    lIdNovoPagamento: TLabel;
+    lNomeNovoPagamento: TLabel;
+    lNomePagamento: TLabel;
+    edtNovoPagamento: TEdit;
+    dsPrazoPagamento: TDataSource;
+    lPedidos: TLabel;
 
 
     procedure FormCreate(Sender: TObject);
@@ -241,35 +243,52 @@ type
     procedure FormShow(Sender: TObject);
     procedure dbNavegadorClick(Sender: TObject; Button: TNavigateBtn);
     procedure edtNovoClienteKeyPress(Sender: TObject; var Key: Char);
-    procedure edtNovoRepresentanteKeyPress(Sender: TObject; var Key: Char);
+    procedure edtNovoPagamentoKeyPress(Sender: TObject; var Key: Char);
     procedure btnNovoClienteClick(Sender: TObject);
-    procedure btnNovoRepresentanteClick(Sender: TObject);
-    procedure edtNovoRepresentanteExit(Sender: TObject);
+    procedure btnNovoPagamentoClick(Sender: TObject);
+    procedure edtNovoPagamentoExit(Sender: TObject);
     procedure edtPesquisaKeyPress(Sender: TObject; var Key: Char);
     procedure edtNovoClienteKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure edtNovoClienteExit(Sender: TObject);
+    procedure edtNovoPagamentoKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
   private
     FController       : iController;
     FUteis            : iUteis;
-    FNomeUsuario      : String;
     FIdPedido         : String;
+    FIdPessoa         : Integer;
+    FIdRepresentante  : String;
     FLista            : TStringList;
     FDataSource       : TDataSource;
     FQuantideRegistro : Integer;
+    FIdPagamento      : String;
+    FValorTotalPedido : Currency;
 
     function GetPedido           : Boolean;
     function GetPedidoItens      : Boolean;
     function GetPedidoPagamentos : Boolean;
+    function GetPessoa           : Boolean;
+    function GetPrazoPagamento   : Boolean;
 
+    //Gerando pedido selecionado.
     procedure IncluirPedido;
     procedure PostPedido;
+
+    //Gerando Itens do pedido selecionado.
     procedure IncluiPedidoItens;
     procedure PostPedidoItens;
+
+    //Gerando Parcelas do pedido selecionado.
     procedure IncluiPedidoPagamentos;
     procedure PostPedidoPagamentos;
+    //Parcelas
 
     procedure AbilitaNovaPessoa;
     procedure DesabilitaNovaPessoa;
+
+    procedure AbilitaNovoPagamento;
+    procedure DesabilitaNovoPagamento;
     { Private declarations }
   public
     { Public declarations }
@@ -283,7 +302,8 @@ implementation
 uses
   Controller.Imp,
   Uteis,
-  View.Entidade.Pesquisar.Pessoa;
+  View.Entidade.Pesquisar.Pessoa,
+  View.Entidade.Pesquisar.Pagamento;
 
 {$R *.dfm}
 
@@ -299,6 +319,7 @@ procedure TfrmReplicarPedidos.FormShow(Sender: TObject);
 begin
   FUteis
     .AtualizaDataInicioFim(frmReplicarPedidos);
+
   Logo.Panels[2].Text := FUteis.NomeUsuario;
   Logo.Panels[3].Text := FUteis.IdEmpresa;
   Logo.Panels[4].Text := FUteis.NomeEmpresa;
@@ -359,7 +380,7 @@ begin
   begin
     Result := True;
     lQuantidadeRegistro.Caption := IntToStr(FQuantideRegistro);
-    //IncluirPedido;;
+    //IncluirPedido;
     GetPedidoItens;
     GetPedidoPagamentos;
   end
@@ -369,39 +390,92 @@ end;
 
 function TfrmReplicarPedidos.GetPedidoItens: Boolean;
 begin
-  Result := False;
   FController
       .FactoryDAO
         .DAOPedidosItens
           .DataSet(DSPedidoItens)
           .GetbyId(dsPedidos.DataSet.FieldByName('codigopedido').AsString);
   if not dsPedidoItens.DataSet.IsEmpty then
-    Result := True;
+    Result := True else Result := False;
 end;
 
 function TfrmReplicarPedidos.GetPedidoPagamentos: Boolean;
 begin
-  Result := False;
   FController
       .FactoryDAO
         .DAOPedidosPagamentos
           .DataSet(DSPedidoPagamentos)
           .GetbyId(dsPedidos.DataSet.FieldByName('codigopedido').AsString);
   if not dsPedidoPagamentos.DataSet.IsEmpty then
-    Result := True;
+    Result := True else Result := False;
+end;
+
+function TfrmReplicarPedidos.GetPessoa: Boolean;
+begin
+  if edtNovoCliente.Text <> '' then
+    case rgEscolhaTipoFiltro.ItemIndex  of
+      0 : FController
+            .FactoryDAO
+              .DAOPessoa
+                .GetbyId(edtNovoCliente.Text)
+                  .DataSet(dsPessoa);
+      1 : FController
+            .FactoryDAO
+              .DAOPessoa
+                .GetbyParams(edtNovoCliente.Text)
+                  .DataSet(dsPessoa);
+    end;
+
+    if not dsPessoa.DataSet.IsEmpty then
+      Result := True else Result := False;
+end;
+
+function TfrmReplicarPedidos.GetPrazoPagamento: Boolean;
+begin
+  if edtNovoPagamento.Text <> '' then
+    case rgEscolhaTipoFiltro.ItemIndex  of
+      0 : FController
+            .FactoryDAO
+              .DAOPrazoPagamento
+                .GetbyId(edtNovoPagamento.Text)
+                  .DataSet(dsPrazoPagamento);
+      1 : FController
+            .FactoryDAO
+              .DAOPrazoPagamento
+                .GetbyParams(edtNovoPagamento.Text)
+                  .DataSet(dsPrazoPagamento);
+    end;
+
+    if not dsPrazoPagamento.DataSet.IsEmpty then
+      Result := True else Result := False;
 end;
 
 procedure TfrmReplicarPedidos.DesabilitaNovaPessoa;
 begin
   edtNovoCliente.Clear;
-  pPessoa.Visible := False;
+  pNovoCliente.Visible := False;
+  FIdPessoa :=0;
+  FIdRepresentante := '';
 end;
 
 procedure TfrmReplicarPedidos.AbilitaNovaPessoa;
 begin
+  pNovoCliente.Visible := True;
   edtNovoCliente.Clear;
   edtNovoCliente.SetFocus;
-  pPessoa.Visible := True;
+end;
+
+procedure TfrmReplicarPedidos.DesabilitaNovoPagamento;
+begin
+  edtNovoPagamento.Clear;
+  pNovoPagamento.Visible := False;
+end;
+
+procedure TfrmReplicarPedidos.AbilitaNovoPagamento;
+begin
+  pNovoPagamento.Visible := True;
+  edtNovoPagamento.Clear;
+  edtNovoPagamento.SetFocus;
 end;
 
 procedure TfrmReplicarPedidos.bbSairClick(Sender: TObject);
@@ -409,7 +483,7 @@ var
   Result: Integer;
 begin
   try
-    Result := Application.MessageBox('Tem certeza que deseja sair do sistema?  ', 'FECHAR',
+    Result := Application.MessageBox('Tem certeza de que deseja sair do sistema?  ', 'FECHAR',
       mb_yesno + mb_defButton2 + mb_iconQuestion);
     if (Result <> IDyes) then
       Abort
@@ -419,7 +493,7 @@ begin
     end;
   except
     on E: Exception do
-      showmessage('Atenção! sistema não será encerrado!');
+      showmessage('Atenção! Sistema não será encerrado!');
   end;
 end;
 
@@ -431,28 +505,23 @@ begin
     DesabilitaNovaPessoa;
 end;
 
-procedure TfrmReplicarPedidos.btnNovoRepresentanteClick(Sender: TObject);
+procedure TfrmReplicarPedidos.btnNovoPagamentoClick(Sender: TObject);
 begin
   if not dsPedidos.DataSet.IsEmpty then
-  begin
-    pRepresentante.Visible := True;
-    edtNovoRepresentante.Clear;
-    edtNovoRepresentante.SetFocus;
-  end
+    AbilitaNovoPagamento
   else
-  begin
-    pRepresentante.Visible := False;
-    edtNovoRepresentante.Clear;
-  end;
+    DesabilitaNovoPagamento;
 end;
 
 procedure TfrmReplicarPedidos.btnConsultarClick(Sender: TObject);
 begin
   if not GetPedido then
   begin
+    DesabilitaNovaPessoa;
     DSPedidoItens.DataSet.Close;
     DSPedidoPagamentos.DataSet.Close;
     DSPedidos.DataSet.Close;
+    edtPesquisa.Clear;
   end;
 end;
 
@@ -460,6 +529,12 @@ procedure TfrmReplicarPedidos.btnFinalizarPedidoClick(Sender: TObject);
 var
   I : Integer;
 begin
+  if dsPedidos.DataSet.IsEmpty then
+  begin
+    ShowMessage('Para replicar um pedido, antes encontre o mesmo.');
+    Exit;
+  end;
+
   if FQuantideRegistro > 10 then
   begin
     ShowMessage('Replicação(ções) de pedidos não pode ser maior que 10 pedidos, estão selecionados um total de-> '+lQuantidadeRegistro.Caption+'  Pedidos.'+#13+
@@ -468,41 +543,46 @@ begin
     Abort;
   end;
 
-
-  FLista := TStringList.Create;
-  FLista.Clear;
-  try
+  if MessageBox(handle, 'Deseja realmente fazer replicação do(s) pedido(s) selecionados?', 'Aviso', mb_IconQuestion or mb_Yesno) = mrYes then
+  begin
+    FLista := TStringList.Create;
+    FLista.Clear;
     try
-      dsPedidos.DataSet.First;
-      while not dsPedidos.DataSet.Eof do
-      begin
-        FLista.Add(dsPedidos.DataSet.FieldByName('id').AsString);
-        dsPedidos.DataSet.Next;
-      end;
-
-      for i := 0 to FLista.Count - 1 do
-      begin
-        FDataSource := TDataSource.Create(Nil);
-        try
-          FController
-                .FactoryDAO
-                  .DAOPedidos
-                    .GetbyId(FLista[i])
-              .DataSet(FDataSource);
-
-          FIdPedido := FLista[i];
-          PostPedido;
-        finally
-          FreeAndNil(FDataSource);
+      try
+        dsPedidos.DataSet.First;
+        while not dsPedidos.DataSet.Eof do
+        begin
+          FLista.Add(dsPedidos.DataSet.FieldByName('id').AsString);
+          dsPedidos.DataSet.Next;
         end;
+
+        for i := 0 to FLista.Count - 1 do
+        begin
+          FDataSource := TDataSource.Create(Nil);
+          try
+            FController
+                  .FactoryDAO
+                    .DAOPedidos
+                      .GetbyId(FLista[i])
+                .DataSet(FDataSource);
+
+            FIdPedido := FLista[i];
+            PostPedido;
+          finally
+            FreeAndNil(FDataSource);
+          end;
+        end;
+      finally
+         FLista.Free;
       end;
-    finally
-       FLista.Free;
-    end;
-    finally
-      ShowMessage('Replicação(ções), efetuadas com sucesso. Quatidade de pedidos replicados-> '+lQuantidadeRegistro.Caption);
-      DesabilitaNovaPessoa;
-    end;
+      finally
+        DesabilitaNovaPessoa;
+        ShowMessage('Replicação(ções), efetuadas com sucesso. Quatidade de pedidos replicados-> '+lQuantidadeRegistro.Caption);
+        edtPesquisa.Clear;
+      end;
+  end
+  else
+     ShowMessage('A sua escolha foi não fazer replicação. Replicação será cancelada!');
 end;
 
 procedure TfrmReplicarPedidos.IncluirPedido;
@@ -527,69 +607,69 @@ begin
     while not LDataSource.DataSet.Eof do
     begin
       cdsPedidos.Append;
-      cdsPedidos.FieldByName('Id')                        .AsInteger  := LDataSource.DataSet.FieldByName('Id')                        .AsInteger;
-      cdsPedidos.FieldByName('IdEmpresa')                 .Asstring   := LDataSource.DataSet.FieldByName('IdEmpresa')                 .AsString;
-      cdsPedidos.FieldByName('CodigoPedido')              .Asstring   := LDataSource.DataSet.FieldByName('CodigoPedido')              .AsString;
-      cdsPedidos.FieldByName('IdCodigoPedido')            .AsInteger  := LDataSource.DataSet.FieldByName('IdCodigoPedido')            .AsInteger;
-      cdsPedidos.FieldByName('IdPessoa')                  .AsInteger  := LDataSource.DataSet.FieldByName('IdPessoa')                  .AsInteger;
-      cdsPedidos.FieldByName('CodigoCliente')             .Asstring   := LDataSource.DataSet.FieldByName('CodigoCliente')             .AsString;
-      cdsPedidos.FieldByName('IdRepresentante')           .Asstring   := LDataSource.DataSet.FieldByName('IdRepresentante')           .AsString;
-      cdsPedidos.FieldByName('IdTransporte')              .Asstring   := LDataSource.DataSet.FieldByName('IdTransporte')              .AsString;
-      cdsPedidos.FieldByName('IdRedespacho')              .Asstring   := LDataSource.DataSet.FieldByName('IdRedespacho')              .AsString;
-      cdsPedidos.FieldByName('IdPagamento')               .Asstring   := LDataSource.DataSet.FieldByName('IdPagamento')               .AsString;
-      cdsPedidos.FieldByName('IdTeleVenda')               .AsInteger  := LDataSource.DataSet.FieldByName('IdTeleVenda')               .AsInteger;
-      cdsPedidos.FieldByName('NumeroPedido')              .Asstring   := LDataSource.DataSet.FieldByName('NumeroPedido')              .AsString;
-      cdsPedidos.FieldByName('CFOP')                      .Asstring   := LDataSource.DataSet.FieldByName('CFOP')                      .AsString;
-      cdsPedidos.FieldByName('DataCadastro')              .AsDateTime := LDataSource.DataSet.FieldByName('DataCadastro')              .AsDateTime;
-      cdsPedidos.FieldByName('DataEntrega')               .AsDateTime := LDataSource.DataSet.FieldByName('DataEntrega')               .AsDateTime;
-      cdsPedidos.FieldByName('MontouCarga')               .AsString   := LDataSource.DataSet.FieldByName('MontouCarga')               .AsString;
-      cdsPedidos.FieldByName('SaiudoEstoque')             .AsString   := LDataSource.DataSet.FieldByName('SaiudoEstoque')             .AsString;
-      cdsPedidos.FieldByName('Faturado')                  .AsString   := LDataSource.DataSet.FieldByName('Faturado')                  .AsString;
-      cdsPedidos.FieldByName('Comissao')                  .AsString   := LDataSource.DataSet.FieldByName('Comissao')                  .AsString;
-      cdsPedidos.FieldByName('Liberado')                  .AsString   := LDataSource.DataSet.FieldByName('Liberado')                  .AsString;
-      cdsPedidos.FieldByName('Impressa')                  .AsString   := LDataSource.DataSet.FieldByName('Impressa')                  .AsString;
-      cdsPedidos.FieldByName('LiberouComissao')           .AsString   := LDataSource.DataSet.FieldByName('LiberouComissao')           .AsString;
-      cdsPedidos.FieldByName('Etiqueta')                  .AsString   := LDataSource.DataSet.FieldByName('Etiqueta')                  .AsString;
-      cdsPedidos.FieldByName('Romaneio')                  .AsString   := LDataSource.DataSet.FieldByName('Romaneio')                  .AsString;
-      cdsPedidos.FieldByName('MontouProducao')            .AsString   := LDataSource.DataSet.FieldByName('MontouProducao')            .AsString;
-      cdsPedidos.FieldByName('Excluido')                  .AsString   := LDataSource.DataSet.FieldByName('Excluido')                  .AsString;
-      cdsPedidos.FieldByName('Enviar')                    .AsString   := LDataSource.DataSet.FieldByName('Enviar')                    .AsString;
-      cdsPedidos.FieldByName('PedidoRemoto')              .AsString   := LDataSource.DataSet.FieldByName('PedidoRemoto')              .AsString;
-      cdsPedidos.FieldByName('HoraCadastro')              .AsDateTime := LDataSource.DataSet.FieldByName('HoraCadastro')              .AsDateTime;
-      cdsPedidos.FieldByName('Conferido')                 .AsString   := LDataSource.DataSet.FieldByName('Conferido')                 .AsString;
-      cdsPedidos.FieldByName('TipoPedido')                .AsString   := LDataSource.DataSet.FieldByName('TipoPedido')                .AsString;
-      cdsPedidos.FieldByName('TipoPagamento')             .AsString   := LDataSource.DataSet.FieldByName('TipoPagamento')             .AsString;
-      cdsPedidos.FieldByName('TomadaNFe')                 .AsString   := LDataSource.DataSet.FieldByName('TomadaNFe')                 .AsString;
-      cdsPedidos.FieldByName('AliquotaComissao')          .AsCurrency := LDataSource.DataSet.FieldByName('AliquotaComissao')          .AsCurrency;
-      cdsPedidos.FieldByName('AliquotaDesconto')          .AsCurrency := LDataSource.DataSet.FieldByName('AliquotaDesconto')          .AsCurrency;
-      cdsPedidos.FieldByName('AliquotaFrete')             .AsCurrency := LDataSource.DataSet.FieldByName('AliquotaFrete')             .AsCurrency;
-      cdsPedidos.FieldByName('AliquotaNFe')               .AsCurrency := LDataSource.DataSet.FieldByName('AliquotaNFe')               .AsCurrency;
-      cdsPedidos.FieldByName('AliquotaIcms')              .AsCurrency := LDataSource.DataSet.FieldByName('AliquotaIcms')              .AsCurrency;
-      cdsPedidos.FieldByName('AliquotaIpi')               .AsCurrency := LDataSource.DataSet.FieldByName('AliquotaIpi')               .AsCurrency;
-      cdsPedidos.FieldByName('AliquotaComissaoTeleVendas').AsCurrency := LDataSource.DataSet.FieldByName('AliquotaComissaoTeleVendas').AsCurrency;
-      cdsPedidos.FieldByName('AliquotaSeguro')            .AsCurrency := LDataSource.DataSet.FieldByName('AliquotaSeguro')            .AsCurrency;
-      cdsPedidos.FieldByName('ValorOutrasDespesas')       .AsCurrency := LDataSource.DataSet.FieldByName('ValorOutrasDespesas')       .AsCurrency;
-      cdsPedidos.FieldByName('SubTotal')                  .AsCurrency := LDataSource.DataSet.FieldByName('SubTotal')                  .AsCurrency;
-      cdsPedidos.FieldByName('TotalPedido')               .AsCurrency := LDataSource.DataSet.FieldByName('TotalPedido')               .AsCurrency;
-      cdsPedidos.FieldByName('ValorDesconto')              .AsCurrency := LDataSource.DataSet.FieldByName('ValorDesconto')            .AsCurrency;
-      cdsPedidos.FieldByName('ValorImpostos')             .AsCurrency := LDataSource.DataSet.FieldByName('ValorImpostos')             .AsCurrency;
-      cdsPedidos.FieldByName('ValorReceber')              .AsCurrency := LDataSource.DataSet.FieldByName('ValorReceber')              .AsCurrency;
-      cdsPedidos.FieldByName('PesoLiquido')               .AsCurrency := LDataSource.DataSet.FieldByName('PesoLiquido')               .AsCurrency;
-      cdsPedidos.FieldByName('PesoBruto')                 .AsCurrency := LDataSource.DataSet.FieldByName('PesoBruto')                 .AsCurrency;
-      cdsPedidos.FieldByName('QtdeVolume')                .AsInteger := LDataSource.DataSet.FieldByName('QtdeVolume')                 .AsInteger;
-      cdsPedidos.FieldByName('TotalCubico')               .AsCurrency := LDataSource.DataSet.FieldByName('TotalCubico')               .AsCurrency;
-      cdsPedidos.FieldByName('TeleVenda')                 .AsString := LDataSource.DataSet.FieldByName('TeleVenda')                   .AsString;
-      cdsPedidos.FieldByName('PagoCom')                   .AsString := LDataSource.DataSet.FieldByName('PagoCom')                     .AsString;
-      cdsPedidos.FieldByName('AouP')                      .AsString := LDataSource.DataSet.FieldByName('AouP')                        .AsString;
-      cdsPedidos.FieldByName('Tabela')                    .AsString := LDataSource.DataSet.FieldByName('Tabela')                      .AsString;
-      cdsPedidos.FieldByName('Status')                    .AsString := LDataSource.DataSet.FieldByName('Status')                      .AsString;
-      cdsPedidos.FieldByName('Obs')                       .AsString := LDataSource.DataSet.FieldByName('Obs')                         .AsString;
-      cdsPedidos.FieldByName('ObsPedido')                 .AsString := LDataSource.DataSet.FieldByName('ObsPedido')                   .AsString;
-      cdsPedidos.FieldByName('MunFrete')                  .AsInteger := LDataSource.DataSet.FieldByName('MunFrete')                   .AsInteger;
-      cdsPedidos.FieldByName('LojaAtacado')               .AsInteger := LDataSource.DataSet.FieldByName('LojaAtacado')                .AsInteger;
-      cdsPedidos.FieldByName('TabelaPrecoManual')         .AsInteger := LDataSource.DataSet.FieldByName('TabelaPrecoManual')          .AsInteger;
-      cdsPedidos.FieldByName('Frete')                     .AsString := LDataSource.DataSet.FieldByName('Frete')                       .AsString;
-      cdsPedidos.FieldByName('NomeUsuario')               .AsString := LDataSource.DataSet.FieldByName('NomeUsuario')                 .AsString;
+      cdsPedidos.FieldByName('Id')                        .AsInteger   := LDataSource.DataSet.FieldByName('Id')                        .AsInteger;
+      cdsPedidos.FieldByName('IdEmpresa')                 .Asstring    := LDataSource.DataSet.FieldByName('IdEmpresa')                 .AsString;
+      cdsPedidos.FieldByName('CodigoPedido')              .Asstring    := LDataSource.DataSet.FieldByName('CodigoPedido')              .AsString;
+      cdsPedidos.FieldByName('IdCodigoPedido')            .AsInteger   := LDataSource.DataSet.FieldByName('IdCodigoPedido')            .AsInteger;
+      cdsPedidos.FieldByName('IdPessoa')                  .AsInteger   := LDataSource.DataSet.FieldByName('IdPessoa')                  .AsInteger;
+      cdsPedidos.FieldByName('CodigoCliente')             .Asstring    := LDataSource.DataSet.FieldByName('CodigoCliente')             .AsString;
+      cdsPedidos.FieldByName('IdRepresentante')           .Asstring    := LDataSource.DataSet.FieldByName('IdRepresentante')           .AsString;
+      cdsPedidos.FieldByName('IdTransporte')              .Asstring    := LDataSource.DataSet.FieldByName('IdTransporte')              .AsString;
+      cdsPedidos.FieldByName('IdRedespacho')              .Asstring    := LDataSource.DataSet.FieldByName('IdRedespacho')              .AsString;
+      cdsPedidos.FieldByName('IdPagamento')               .Asstring    := LDataSource.DataSet.FieldByName('IdPagamento')               .AsString;
+      cdsPedidos.FieldByName('IdTeleVenda')               .AsInteger   := LDataSource.DataSet.FieldByName('IdTeleVenda')               .AsInteger;
+      cdsPedidos.FieldByName('NumeroPedido')              .Asstring    := LDataSource.DataSet.FieldByName('NumeroPedido')              .AsString;
+      cdsPedidos.FieldByName('CFOP')                      .Asstring    := LDataSource.DataSet.FieldByName('CFOP')                      .AsString;
+      cdsPedidos.FieldByName('DataCadastro')              .AsDateTime  := LDataSource.DataSet.FieldByName('DataCadastro')              .AsDateTime;
+      cdsPedidos.FieldByName('DataEntrega')               .AsDateTime  := LDataSource.DataSet.FieldByName('DataEntrega')               .AsDateTime;
+      cdsPedidos.FieldByName('MontouCarga')               .AsString    := LDataSource.DataSet.FieldByName('MontouCarga')               .AsString;
+      cdsPedidos.FieldByName('SaiudoEstoque')             .AsString    := LDataSource.DataSet.FieldByName('SaiudoEstoque')             .AsString;
+      cdsPedidos.FieldByName('Faturado')                  .AsString    := LDataSource.DataSet.FieldByName('Faturado')                  .AsString;
+      cdsPedidos.FieldByName('Comissao')                  .AsString    := LDataSource.DataSet.FieldByName('Comissao')                  .AsString;
+      cdsPedidos.FieldByName('Liberado')                  .AsString    := LDataSource.DataSet.FieldByName('Liberado')                  .AsString;
+      cdsPedidos.FieldByName('Impressa')                  .AsString    := LDataSource.DataSet.FieldByName('Impressa')                  .AsString;
+      cdsPedidos.FieldByName('LiberouComissao')           .AsString    := LDataSource.DataSet.FieldByName('LiberouComissao')           .AsString;
+      cdsPedidos.FieldByName('Etiqueta')                  .AsString    := LDataSource.DataSet.FieldByName('Etiqueta')                  .AsString;
+      cdsPedidos.FieldByName('Romaneio')                  .AsString    := LDataSource.DataSet.FieldByName('Romaneio')                  .AsString;
+      cdsPedidos.FieldByName('MontouProducao')            .AsString    := LDataSource.DataSet.FieldByName('MontouProducao')            .AsString;
+      cdsPedidos.FieldByName('Excluido')                  .AsString    := LDataSource.DataSet.FieldByName('Excluido')                  .AsString;
+      cdsPedidos.FieldByName('Enviar')                    .AsString    := LDataSource.DataSet.FieldByName('Enviar')                    .AsString;
+      cdsPedidos.FieldByName('PedidoRemoto')              .AsString    := LDataSource.DataSet.FieldByName('PedidoRemoto')              .AsString;
+      cdsPedidos.FieldByName('HoraCadastro')              .AsDateTime  := LDataSource.DataSet.FieldByName('HoraCadastro')              .AsDateTime;
+      cdsPedidos.FieldByName('Conferido')                 .AsString    := LDataSource.DataSet.FieldByName('Conferido')                 .AsString;
+      cdsPedidos.FieldByName('TipoPedido')                .AsString    := LDataSource.DataSet.FieldByName('TipoPedido')                .AsString;
+      cdsPedidos.FieldByName('TipoPagamento')             .AsString    := LDataSource.DataSet.FieldByName('TipoPagamento')             .AsString;
+      cdsPedidos.FieldByName('TomadaNFe')                 .AsString    := LDataSource.DataSet.FieldByName('TomadaNFe')                 .AsString;
+      cdsPedidos.FieldByName('AliquotaComissao')          .AsCurrency  := LDataSource.DataSet.FieldByName('AliquotaComissao')          .AsCurrency;
+      cdsPedidos.FieldByName('AliquotaDesconto')          .AsCurrency  := LDataSource.DataSet.FieldByName('AliquotaDesconto')          .AsCurrency;
+      cdsPedidos.FieldByName('AliquotaFrete')             .AsCurrency  := LDataSource.DataSet.FieldByName('AliquotaFrete')             .AsCurrency;
+      cdsPedidos.FieldByName('AliquotaNFe')               .AsCurrency  := LDataSource.DataSet.FieldByName('AliquotaNFe')               .AsCurrency;
+      cdsPedidos.FieldByName('AliquotaIcms')              .AsCurrency  := LDataSource.DataSet.FieldByName('AliquotaIcms')              .AsCurrency;
+      cdsPedidos.FieldByName('AliquotaIpi')               .AsCurrency  := LDataSource.DataSet.FieldByName('AliquotaIpi')               .AsCurrency;
+      cdsPedidos.FieldByName('AliquotaComissaoTeleVendas').AsCurrency  := LDataSource.DataSet.FieldByName('AliquotaComissaoTeleVendas').AsCurrency;
+      cdsPedidos.FieldByName('AliquotaSeguro')            .AsCurrency  := LDataSource.DataSet.FieldByName('AliquotaSeguro')            .AsCurrency;
+      cdsPedidos.FieldByName('ValorOutrasDespesas')       .AsCurrency  := LDataSource.DataSet.FieldByName('ValorOutrasDespesas')       .AsCurrency;
+      cdsPedidos.FieldByName('SubTotal')                  .AsCurrency  := LDataSource.DataSet.FieldByName('SubTotal')                  .AsCurrency;
+      cdsPedidos.FieldByName('TotalPedido')               .AsCurrency  := LDataSource.DataSet.FieldByName('TotalPedido')               .AsCurrency;
+      cdsPedidos.FieldByName('ValorDesconto')              .AsCurrency := LDataSource.DataSet.FieldByName('ValorDesconto')             .AsCurrency;
+      cdsPedidos.FieldByName('ValorImpostos')             .AsCurrency  := LDataSource.DataSet.FieldByName('ValorImpostos')             .AsCurrency;
+      cdsPedidos.FieldByName('ValorReceber')              .AsCurrency  := LDataSource.DataSet.FieldByName('ValorReceber')              .AsCurrency;
+      cdsPedidos.FieldByName('PesoLiquido')               .AsCurrency  := LDataSource.DataSet.FieldByName('PesoLiquido')               .AsCurrency;
+      cdsPedidos.FieldByName('PesoBruto')                 .AsCurrency  := LDataSource.DataSet.FieldByName('PesoBruto')                 .AsCurrency;
+      cdsPedidos.FieldByName('QtdeVolume')                .AsInteger   := LDataSource.DataSet.FieldByName('QtdeVolume')                .AsInteger;
+      cdsPedidos.FieldByName('TotalCubico')               .AsCurrency  := LDataSource.DataSet.FieldByName('TotalCubico')               .AsCurrency;
+      cdsPedidos.FieldByName('TeleVenda')                 .AsString    := LDataSource.DataSet.FieldByName('TeleVenda')                 .AsString;
+      cdsPedidos.FieldByName('PagoCom')                   .AsString    := LDataSource.DataSet.FieldByName('PagoCom')                   .AsString;
+      cdsPedidos.FieldByName('AouP')                      .AsString    := LDataSource.DataSet.FieldByName('AouP')                      .AsString;
+      cdsPedidos.FieldByName('Tabela')                    .AsString    := LDataSource.DataSet.FieldByName('Tabela')                    .AsString;
+      cdsPedidos.FieldByName('Status')                    .AsString    := LDataSource.DataSet.FieldByName('Status')                    .AsString;
+      cdsPedidos.FieldByName('Obs')                       .AsString    := LDataSource.DataSet.FieldByName('Obs')                       .AsString;
+      cdsPedidos.FieldByName('ObsPedido')                 .AsString    := LDataSource.DataSet.FieldByName('ObsPedido')                 .AsString;
+      cdsPedidos.FieldByName('MunFrete')                  .AsInteger   := LDataSource.DataSet.FieldByName('MunFrete')                  .AsInteger;
+      cdsPedidos.FieldByName('LojaAtacado')               .AsInteger   := LDataSource.DataSet.FieldByName('LojaAtacado')               .AsInteger;
+      cdsPedidos.FieldByName('TabelaPrecoManual')         .AsInteger   := LDataSource.DataSet.FieldByName('TabelaPrecoManual')         .AsInteger;
+      cdsPedidos.FieldByName('Frete')                     .AsString    := LDataSource.DataSet.FieldByName('Frete')                     .AsString;
+      cdsPedidos.FieldByName('NomeUsuario')               .AsString    := LDataSource.DataSet.FieldByName('NomeUsuario')               .AsString;
       cdsPedidos.Post;
 
       LDataSource.DataSet.Next;
@@ -602,18 +682,18 @@ end;
 
 procedure TfrmReplicarPedidos.PostPedido;
 var
-  lIdPessoa        : Integer;
   lCodigoCliente   : String;
-  lIdRepresentante : String;
 begin
-  if edtNovoCliente.Text<>'' then
-    lIdPessoa := StrToInt(edtNovoCliente.Text) else
-    lIdPessoa := FDataSource.DataSet.FieldByName('idpessoa').AsInteger;
-  lCodigoCliente := FormatFloat('00000', lIdPessoa);
+  if FIdPessoa=0 then
+    FIdPessoa := FDataSource.DataSet.FieldByName('idpessoa').AsInteger;
 
-  if edtNovoRepresentante.Text<>'' then
-    lIdRepresentante := edtNovoRepresentante.Text else
-    lIdRepresentante := FDataSource.DataSet.FieldByName('idrepresentante').AsString;
+  lCodigoCliente := FormatFloat('00000', FIdPessoa);
+
+  if FIdRepresentante='' then
+    FIdRepresentante := FDataSource.DataSet.FieldByName('idrepresentante').AsString;
+
+  FValorTotalPedido := FDataSource.DataSet.FieldByName('totalpedido').AsCurrency;
+  FIdPagamento      := FDataSource.DataSet.FieldByName('idpagamento').AsString;
 
   try
     FController
@@ -624,12 +704,12 @@ begin
              .IdEmpresa                 (FDataSource.DataSet.FieldByName('idempresa')                 .AsString)
              .CodigoPedido              (FDataSource.DataSet.FieldByName('codigopedido')              .AsString)
              .codigoPedido              (FDataSource.DataSet.FieldByName('idcodigopedido')            .AsString)
-             .IdPessoa                  (lIdPessoa)
+             .IdPessoa                  (FIdPessoa)
              .CodigoCliente             (lCodigoCliente)
-             .IdRepresentante           (lIdRepresentante)
+             .IdRepresentante           (FIdRepresentante)
              .IdTransporte              (FDataSource.DataSet.FieldByName('idtransporte')              .AsString)
              .IdRedespacho              (FDataSource.DataSet.FieldByName('idredespacho')              .AsString)
-             .IdPagamento               (FDataSource.DataSet.FieldByName('idpagamento')               .AsString)
+             .IdPagamento               (FIdPagamento)
              .IdTeleVenda               (FDataSource.DataSet.FieldByName('idtelevenda')               .AsInteger)
              .NumeroPedido              (FDataSource.DataSet.FieldByName('numeropedido')              .AsString)
              .CFOP                      (FDataSource.DataSet.FieldByName('cfop')                      .AsString)
@@ -831,14 +911,34 @@ var
   LItem       : Integer;
   LDataSource : TDataSource;
 begin
+  LDataSource := TDataSource.Create(nil);
+
+  FController
+    .FactoryDAO
+      .DAOPrazoPagamentoItens
+        .This
+          .Id(FIdPagamento)
+          .&End
+        .GetbyIdDataCalculada
+        .DataSet(lDataSource);
+
+
   FIdPedido:= StringOfChar('0', 5 - Length(FIdPedido)) + FIdPedido;
   LDataSource := TDataSource.Create(nil);
   try
     FController
-            .FactoryDAO
-              .DAOPedidosPagamentos
-                .GetbyId(FIdPedido)
-            .DataSet(LDataSource);
+           .FactoryDAO
+             .DAOCalcularValorParcela
+               .This
+                 .ValorTotalPedido(FValorTotalPedido)
+                   .PrazoPagamentoItens
+                     .Id(FIdPagamento)
+                       .Pedidos.Id(StrToInt(FIdPedido))
+                       .&End
+                     .&End
+                    .&End
+                    .DataSet(LDataSource)
+                    .CalcularValorParcela;
 
     LItem := 0;
 
@@ -846,35 +946,36 @@ begin
        .FactoryDAO
          .DAOPedidosPagamentos
            .This
-             .CriarEstruturaCDS(cdsPedidoPagamentos);
+             .CriarEstruturaCDS(cdsPedidoPagamentos)
+           .&End;
 
     LDataSource.DataSet.First;
     while not LDataSource.DataSet.Eof do
     begin
       LItem := LItem +1;
       cdsPedidoPagamentos.Append;
-      cdsPedidoPagamentos.FieldByName('IdPedido')           .AsInteger   := LDataSource.DataSet.FieldByName('IdPedido')           .AsInteger;
-      cdsPedidoPagamentos.FieldByName('IdPed')              .AsInteger   := LDataSource.DataSet.FieldByName('IdPed')              .AsInteger;
-      cdsPedidoPagamentos.FieldByName('CodigoPedido')       .Asstring    := LDataSource.DataSet.FieldByName('CodigoPedido')       .AsString;
-      cdsPedidoPagamentos.FieldByName('IdPagamento')        .Asstring    := LDataSource.DataSet.FieldByName('IdPagamento')        .AsString;
+      cdsPedidoPagamentos.FieldByName('IdPedido')           .AsInteger   := StrToInt(FIdPedido);
+      cdsPedidoPagamentos.FieldByName('IdPed')              .AsInteger   := StrToInt(FIdPedido);
+      cdsPedidoPagamentos.FieldByName('CodigoPedido')       .Asstring    := FIdPedido;
+      cdsPedidoPagamentos.FieldByName('IdPagamento')        .Asstring    := LDataSource.DataSet.FieldByName('IdPagamento')     .AsString;
       cdsPedidoPagamentos.FieldByName('Item')               .AsInteger   := LItem;
-      cdsPedidoPagamentos.FieldByName('NumeroPagamento')    .AsInteger   := LDataSource.DataSet.FieldByName('NumeroPagamento')    .AsInteger;
-      cdsPedidoPagamentos.FieldByName('DataVencimento')     .AsDateTime  := LDataSource.DataSet.FieldByName('DataVencimento')     .AsDateTime;
-      cdsPedidoPagamentos.FieldByName('ParcelaNova')        .AsString    := LDataSource.DataSet.FieldByName('ParcelaNova')        .AsString;
-      cdsPedidoPagamentos.FieldByName('EmitiuBoleto')       .Asstring    := LDataSource.DataSet.FieldByName('EmitiuBoleto')       .AsString;
-      cdsPedidoPagamentos.FieldByName('NumeroBanco')        .Asstring    := LDataSource.DataSet.FieldByName('NumeroBanco')        .AsString;
-      cdsPedidoPagamentos.FieldByName('ValorTotal')         .AsCurrency  := LDataSource.DataSet.FieldByName('ValorTotal')         .AsCurrency;
-      cdsPedidoPagamentos.FieldByName('ValorParcela')       .AsCurrency  := LDataSource.DataSet.FieldByName('ValorParcela')       .AsCurrency;
-      cdsPedidoPagamentos.FieldByName('QuantidadedeDias')   .AsInteger   := LDataSource.DataSet.FieldByName('QuantidadedeDias')   .AsInteger;
-      cdsPedidoPagamentos.FieldByName('PagouComo')          .Asstring    := LDataSource.DataSet.FieldByName('PagouComo')          .AsString;
-      cdsPedidoPagamentos.FieldByName('PagouComissao')      .Asstring    := LDataSource.DataSet.FieldByName('PagouComissao')      .AsString;
-      cdsPedidoPagamentos.FieldByName('LiberouComissao')    .Asstring    := LDataSource.DataSet.FieldByName('LiberouComissao')    .AsString;
-      cdsPedidoPagamentos.FieldByName('OcorrenciaBanco')    .Asstring    := LDataSource.DataSet.FieldByName('OcorrenciaBanco')    .AsString;
-      cdsPedidoPagamentos.FieldByName('LL')                 .Asstring    := LDataSource.DataSet.FieldByName('LL')                 .AsString;
-      cdsPedidoPagamentos.FieldByName('Enviar')             .Asstring    := LDataSource.DataSet.FieldByName('Enviar')             .AsString;
-      cdsPedidoPagamentos.FieldByName('ObsPagamento')       .Asstring    := LDataSource.DataSet.FieldByName('ObsPagamento')       .AsString;
-      cdsPedidoPagamentos.FieldByName('Descontado')         .Asstring    := LDataSource.DataSet.FieldByName('Descontado')         .AsString;
-      cdsPedidoPagamentos.FieldByName('EnviadoParaCartorio').Asstring    := LDataSource.DataSet.FieldByName('EnviadoParaCartorio').AsString;
+      cdsPedidoPagamentos.FieldByName('NumeroPagamento')    .AsInteger   := LDataSource.DataSet.FieldByName('NumeroPagamento') .AsInteger;
+      cdsPedidoPagamentos.FieldByName('DataVencimento')     .AsDateTime  := LDataSource.DataSet.FieldByName('DataVencimento')  .AsDateTime;
+      cdsPedidoPagamentos.FieldByName('ParcelaNova')        .AsString    := 'NAO';
+      cdsPedidoPagamentos.FieldByName('EmitiuBoleto')       .Asstring    := 'NAO';
+      cdsPedidoPagamentos.FieldByName('NumeroBanco')        .Asstring    := '999';
+      cdsPedidoPagamentos.FieldByName('ValorTotal')         .AsCurrency  := LDataSource.DataSet.FieldByName('ValorTotalPedido').AsCurrency;
+      cdsPedidoPagamentos.FieldByName('ValorParcela')       .AsCurrency  := LDataSource.DataSet.FieldByName('ValorParcela')    .AsCurrency;
+      cdsPedidoPagamentos.FieldByName('QuantidadedeDias')   .AsInteger   := LDataSource.DataSet.FieldByName('QuantidadedeDias').AsInteger;
+      cdsPedidoPagamentos.FieldByName('PagouComo')          .Asstring    := 'B';
+      cdsPedidoPagamentos.FieldByName('PagouComissao')      .Asstring    := 'NAO';
+      cdsPedidoPagamentos.FieldByName('LiberouComissao')    .Asstring    := 'NAO';
+      cdsPedidoPagamentos.FieldByName('OcorrenciaBanco')    .Asstring    := '01';
+      cdsPedidoPagamentos.FieldByName('LL')                 .Asstring    := 'P';
+      cdsPedidoPagamentos.FieldByName('Enviar')             .Asstring    := 'SIM';
+      cdsPedidoPagamentos.FieldByName('ObsPagamento')       .Asstring    := '';
+      cdsPedidoPagamentos.FieldByName('Descontado')         .Asstring    := 'NAO';
+      cdsPedidoPagamentos.FieldByName('EnviadoParaCartorio').Asstring    := 'NAO';
 
       LDataSource.DataSet.Next;
     end;
@@ -886,23 +987,11 @@ begin
 end;
 
 procedure TfrmReplicarPedidos.PostPedidoPagamentos;
-var
-  lDataVencimento : TDateTime;
 begin
   cdsPedidoPagamentos.First;
   try
     while not cdsPedidoPagamentos.Eof do
     begin
-     lDataVencimento := FController
-                         .FactoryDAO
-                           .DAOPrazoPagamentoItens
-                             .This
-                               .Id(cdsPedidoPagamentos.FieldByName('IdPagamento').AsString)
-                               .NumeroPagamento(cdsPedidoPagamentos.FieldByName('NumeroPagamento').AsInteger)
-                               .&End
-                             .GetbyIdDataCalculada
-                             .This
-                               .DataCalculada;
       FController
         .FactoryDAO
           .DAOPedidosPagamentos
@@ -913,14 +1002,14 @@ begin
               .IdPagamento        (cdsPedidoPagamentos.FieldByName('IdPagamento')        .AsString)
               .Item               (cdsPedidoPagamentos.FieldByName('Item')               .AsInteger)
               .NumeroPagamento    (cdsPedidoPagamentos.FieldByName('NumeroPagamento')    .AsInteger)
-              .DataVencimento     (lDataVencimento)
+              .DataVencimento     (cdsPedidoPagamentos.FieldByName('DataVencimento')     .AsDateTime)
               .ParcelaNova        (cdsPedidoPagamentos.FieldByName('ParcelaNova')        .AsString)
               .EmitiuBoleto       (cdsPedidoPagamentos.FieldByName('EmitiuBoleto')       .AsString)
               .NumeroBanco        (cdsPedidoPagamentos.FieldByName('NumeroBanco')        .AsString)
               .ValorTotal         (cdsPedidoPagamentos.FieldByName('ValorTotal')         .AsCurrency)
               .ValorParcela       (cdsPedidoPagamentos.FieldByName('ValorParcela')       .AsCurrency)
               .QuantidadedeDias   (cdsPedidoPagamentos.FieldByName('QuantidadedeDias')   .AsInteger)
-              .PagouComo          (cdsPedidoPagamentos.FieldByName('PagouComo')          .AsString)
+              .PagoCom            (cdsPedidoPagamentos.FieldByName('PagouComo')          .AsString)
               .PagouComissao      (cdsPedidoPagamentos.FieldByName('PagouComissao')      .AsString)
               .LiberouComissao    (cdsPedidoPagamentos.FieldByName('LiberouComissao')    .AsString)
               .OcorrenciaBanco    (cdsPedidoPagamentos.FieldByName('OcorrenciaBanco')    .AsString)
@@ -1005,13 +1094,37 @@ begin
   end;
 end;
 
-procedure TfrmReplicarPedidos.edtNovoRepresentanteExit(Sender: TObject);
+procedure TfrmReplicarPedidos.edtNovoPagamentoExit(Sender: TObject);
 begin
-  if edtNovoRepresentante.Text<>'' then
-    edtNovoRepresentante.Text := StringOfChar('0', 6 - Length(edtNovoRepresentante.Text)) + edtNovoRepresentante.Text;
+  if not dsPedidos.DataSet.IsEmpty then
+    if GetPrazoPagamento then
+    begin
+      edtNovoPagamento.Text := StringOfChar('0', 5 - Length(edtNovoPagamento.Text)) + edtNovoPagamento.Text;
+      FIdPagamento := edtNovoPagamento.Text;
+      lNomeNovoPagamento.Caption := dsPrazoPagamento.DataSet.FieldByName('descricao').AsString;
+    end
+    else
+      ShowMessage('Registro não encontrado. Tecla F1 busca pesquisar clientes!');
 end;
 
-procedure TfrmReplicarPedidos.edtNovoRepresentanteKeyPress(Sender: TObject; var Key: Char);
+procedure TfrmReplicarPedidos.edtNovoPagamentoKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+  case Key of
+    VK_F1:
+    begin
+      Application.CreateForm(TfrmViewPesquisarPagamento, frmViewPesquisarPagamento);
+      try
+        frmViewPesquisarPagamento.ShowModal;
+      finally
+        frmViewPesquisarPagamento.Release;
+        frmViewPesquisarPagamento := nil;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmReplicarPedidos.edtNovoPagamentoKeyPress(Sender: TObject; var Key: Char);
 begin
    if not (Key in ['0'..'9', Chr(8), Chr(6)]) then Key := #0;
 end;
@@ -1021,6 +1134,18 @@ procedure TfrmReplicarPedidos.edtPesquisaKeyPress(Sender: TObject;
 begin
   if ((rgEscolhaTipoFiltro.ItemIndex =0) or (rgEscolhaTipoFiltro.ItemIndex=1)) then
     if not (Key in ['0'..'9', Chr(8), Chr(6)]) then Key := #0;
+end;
+
+procedure TfrmReplicarPedidos.edtNovoClienteExit(Sender: TObject);
+begin
+  if not dsPedidos.DataSet.IsEmpty then
+    if GetPessoa then
+    begin
+      FIdPessoa        := dsPessoa.DataSet.FieldByName('Id').AsInteger;
+      FIdRepresentante := dsPessoa.DataSet.FieldByName('IdRepresentante').AsString;
+    end
+    else
+      ShowMessage('Registro não encontrado. Tecla F1 busca pesquisar clientes!');
 end;
 
 procedure TfrmReplicarPedidos.edtNovoClienteKeyDown(Sender: TObject;

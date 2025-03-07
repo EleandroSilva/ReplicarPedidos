@@ -13,12 +13,14 @@ interface
 type
   iEntidadePessoa<T> = interface
     ['{2AB3B5F6-5C97-4F14-AD38-76D480390DE7}']
-    function Id        (Value : Integer) : iEntidadePessoa<T>; overload;
-    function Id                          : Integer;            overload;
-    function NomePessoa(Value : String)  : iEntidadePessoa<T>; overload;
-    function NomePessoa                  : String;             overload;
-    function CNPJCPF   (Value : String)  : iEntidadePessoa<T>; overload;
-    function CNPJCPF                     : String;             overload;
+    function Id        (Value : Integer)     : iEntidadePessoa<T>; overload;
+    function Id                              : Integer;            overload;
+    function NomePessoa(Value : String)      : iEntidadePessoa<T>; overload;
+    function NomePessoa                      : String;             overload;
+    function CNPJCPF   (Value : String)      : iEntidadePessoa<T>; overload;
+    function CNPJCPF                         : String;             overload;
+    function IdRepresentante(Value : String) : iEntidadePessoa<T>; overload;
+    function IdRepresentante                 : String;             overload;
     function &End : T;
   end;
 

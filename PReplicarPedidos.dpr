@@ -40,7 +40,12 @@ uses
   Model.DAO.Prazo.Pagamento.Interfaces in 'src\mvc\model\DAO\interfaces\Model.DAO.Prazo.Pagamento.Interfaces.pas',
   Model.DAO.Prazo.Pagamento.Itens.Interfaces in 'src\mvc\model\DAO\interfaces\Model.DAO.Prazo.Pagamento.Itens.Interfaces.pas',
   Model.DAO.Prazo.Pagamento.Imp in 'src\mvc\model\DAO\imp\Model.DAO.Prazo.Pagamento.Imp.pas',
-  Model.DAO.Prazo.Pagamento.Itens.Imp in 'src\mvc\model\DAO\imp\Model.DAO.Prazo.Pagamento.Itens.Imp.pas';
+  Model.DAO.Prazo.Pagamento.Itens.Imp in 'src\mvc\model\DAO\imp\Model.DAO.Prazo.Pagamento.Itens.Imp.pas',
+  Model.Entidade.Calcular.Valor.Parcela.Interfaces in 'src\mvc\model\entidade\interfaces\Model.Entidade.Calcular.Valor.Parcela.Interfaces.pas',
+  Model.Entidade.Calcular.Valor.Parcela.Imp in 'src\mvc\model\entidade\imp\Model.Entidade.Calcular.Valor.Parcela.Imp.pas',
+  Model.DAO.Calcular.Valor.Parcela.Interfaces in 'src\mvc\model\DAO\interfaces\Model.DAO.Calcular.Valor.Parcela.Interfaces.pas',
+  Mmodel.DAO.Calcular.Valor.Parcela.Imp in 'src\mvc\model\DAO\imp\Mmodel.DAO.Calcular.Valor.Parcela.Imp.pas',
+  View.Entidade.Pesquisar.Pagamento in 'src\mvc\view\Entidades\Pesquisar\View.Entidade.Pesquisar.Pagamento.pas' {frmViewPesquisarPagamento};
 
 {$R *.res}
 
@@ -49,6 +54,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmReplicarPedidos, frmReplicarPedidos);
-  Application.CreateForm(TfrmViewPesquisarPessoa, frmViewPesquisarPessoa);
   Application.Run;
 end.

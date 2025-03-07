@@ -34,7 +34,7 @@ type
       FValorTotal          : Currency;
       FValorParcela        : Currency;
       FQuantidadedeDias    : Integer;
-      FPagouComo           : String;
+      FPagoCom             : String;
       FPagouComissao       : String;
       FLiberouComissao     : String;
       FOcorrenciaBanco     : String;
@@ -74,8 +74,8 @@ type
       function ValorParcela                           : Currency;                      overload;
       function QuantidadedeDias   (Value : Integer)   : iEntidadePedidosPagamentos<T>; overload;
       function QuantidadedeDias                       : Integer;                       overload;
-      function PagouComo          (Value : String)    : iEntidadePedidosPagamentos<T>; overload;
-      function PagouComo                              : String;                        overload;
+      function PagoCom            (Value : String)    : iEntidadePedidosPagamentos<T>; overload;
+      function PagoCom                                : String;                        overload;
       function PagouComissao      (Value : String)    : iEntidadePedidosPagamentos<T>; overload;
       function PagouComissao                          : String;                        overload;
       function LiberouComissao    (Value : String)    : iEntidadePedidosPagamentos<T>; overload;
@@ -293,15 +293,15 @@ begin
   Result := FOcorrenciaBanco;
 end;
 
-function TEntidadePedidosPagamentos<T>.PagouComo(Value: String): iEntidadePedidosPagamentos<T>;
+function TEntidadePedidosPagamentos<T>.PagoCom(Value: String): iEntidadePedidosPagamentos<T>;
 begin
   Result := Self;
-  FPagouComo := Value;
+  FPagoCom := Value;
 end;
 
-function TEntidadePedidosPagamentos<T>.PagouComo: String;
+function TEntidadePedidosPagamentos<T>.PagoCom: String;
 begin
-  Result := FPagouComo;
+  Result := FPagoCom;
 end;
 
 function TEntidadePedidosPagamentos<T>.PagouComissao(Value: String): iEntidadePedidosPagamentos<T>;

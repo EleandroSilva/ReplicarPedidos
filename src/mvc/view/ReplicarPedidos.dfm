@@ -117,6 +117,12 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           end
           item
             Expanded = False
+            FieldName = 'pagocom'
+            Title.Caption = 'Pago com:'
+            Visible = True
+          end
+          item
+            Expanded = False
             FieldName = 'TipoPagamento'
             Title.Caption = 'Tipo pagamento:'
             Visible = True
@@ -207,12 +213,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           end
           item
             Expanded = False
-            FieldName = 'pagocom'
-            Title.Caption = 'Pago com:'
-            Visible = True
-          end
-          item
-            Expanded = False
             FieldName = 'obs'
             Title.Caption = 'Obs:'
             Visible = True
@@ -244,12 +244,14 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitLeft = -112
+        ExplicitTop = 6
         object lPedidos: TLabel
           Left = 497
           Top = 0
-          Width = 93
+          Width = 106
           Height = 41
-          Align = alLeft
+          Align = alClient
           Alignment = taCenter
           Caption = 'Pedido(s)'
           Font.Charset = ANSI_CHARSET
@@ -258,44 +260,48 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           Font.Name = 'Teko SemiBold'
           Font.Style = [fsBold]
           ParentFont = False
-          ExplicitHeight = 39
+          ExplicitWidth = 131
         end
         object Panel2: TPanel
-          Left = 590
+          Left = 603
           Top = 0
           Width = 521
           Height = 41
-          Align = alLeft
+          Align = alRight
           BevelOuter = bvNone
           TabOrder = 0
-          object btnNovoRepresentante: TBitBtn
-            Left = 6
+          ExplicitLeft = 561
+          ExplicitTop = 2
+          object btnNovoPagamento: TBitBtn
+            Left = 0
             Top = 0
-            Width = 129
+            Width = 136
             Height = 41
-            Align = alRight
-            Caption = 'Alterar Representante:'
+            Align = alLeft
+            Caption = 'Alterar Pagamento:'
             TabOrder = 0
             Visible = False
-            OnClick = btnNovoRepresentanteClick
+            OnClick = btnNovoPagamentoClick
+            ExplicitLeft = 24
           end
-          object pRepresentante: TPanel
-            Left = 135
+          object pNovoPagamento: TPanel
+            Left = 136
             Top = 0
-            Width = 386
+            Width = 361
             Height = 41
-            Align = alRight
+            Align = alLeft
             BevelOuter = bvNone
             Color = clMedGray
             ParentBackground = False
             TabOrder = 1
             Visible = False
-            object Label9: TLabel
+            ExplicitLeft = 160
+            object lIdNovoPagamento: TLabel
               Left = 4
               Top = 1
-              Width = 40
+              Width = 44
               Height = 13
-              Caption = 'Id Rep:'
+              Caption = 'Id Pgto:'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -11
@@ -303,19 +309,19 @@ object frmReplicarPedidos: TfrmReplicarPedidos
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Label10: TLabel
+            object lNomeNovoPagamento: TLabel
               Left = 64
               Top = 22
               Width = 12
               Height = 13
               Caption = '...'
             end
-            object Label11: TLabel
+            object lNomePagamento: TLabel
               Left = 64
               Top = 1
-              Width = 123
+              Width = 103
               Height = 13
-              Caption = 'Nome Representante:'
+              Caption = 'Nome Pagamento:'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -11
@@ -323,14 +329,15 @@ object frmReplicarPedidos: TfrmReplicarPedidos
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object edtNovoRepresentante: TEdit
+            object edtNovoPagamento: TEdit
               Left = 4
               Top = 17
               Width = 54
               Height = 21
               TabOrder = 0
-              OnExit = edtNovoRepresentanteExit
-              OnKeyPress = edtNovoRepresentanteKeyPress
+              OnExit = edtNovoPagamentoExit
+              OnKeyDown = edtNovoPagamentoKeyDown
+              OnKeyPress = edtNovoPagamentoKeyPress
             end
           end
         end
@@ -345,17 +352,17 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           object btnNovoCliente: TBitBtn
             Left = 0
             Top = 0
-            Width = 88
+            Width = 136
             Height = 41
             Align = alLeft
             Caption = 'Alterar Cliente:'
             TabOrder = 0
             OnClick = btnNovoClienteClick
           end
-          object pPessoa: TPanel
-            Left = 88
+          object pNovoCliente: TPanel
+            Left = 136
             Top = 0
-            Width = 409
+            Width = 361
             Height = 41
             Align = alClient
             BevelOuter = bvNone
@@ -363,7 +370,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             ParentBackground = False
             TabOrder = 1
             Visible = False
-            object Label12: TLabel
+            ExplicitLeft = 88
+            ExplicitWidth = 409
+            object lIdNovoCliente: TLabel
               Left = 4
               Top = 1
               Width = 57
@@ -376,14 +385,14 @@ object frmReplicarPedidos: TfrmReplicarPedidos
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object lNomeCliente: TLabel
+            object lNomeNovoCliente: TLabel
               Left = 64
               Top = 22
               Width = 12
               Height = 13
               Caption = '...'
             end
-            object Label14: TLabel
+            object lNomeCliente: TLabel
               Left = 64
               Top = 1
               Width = 77
@@ -402,6 +411,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
               Width = 54
               Height = 21
               TabOrder = 0
+              OnExit = edtNovoClienteExit
               OnKeyDown = edtNovoClienteKeyDown
               OnKeyPress = edtNovoClienteKeyPress
             end
@@ -526,9 +536,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       ParentBackground = False
       TabOrder = 4
       object Label1: TLabel
-        Left = 244
+        Left = 426
         Top = 0
-        Width = 517
+        Width = 335
         Height = 43
         Align = alClient
         Alignment = taCenter
@@ -539,6 +549,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Font.Name = 'Tahoma'
         Font.Style = []
         ParentFont = False
+        ExplicitLeft = 244
         ExplicitWidth = 312
         ExplicitHeight = 39
       end
@@ -572,9 +583,9 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         OnClick = btnConsultarClick
       end
       object btnFinalizarPedido: TBitBtn
-        Left = 136
+        Left = 185
         Top = 0
-        Width = 108
+        Width = 241
         Height = 43
         Margins.Left = 10
         Margins.Top = 10
@@ -584,6 +595,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         Caption = '&Replicar pedido(s)'
         TabOrder = 2
         OnClick = btnFinalizarPedidoClick
+        ExplicitLeft = 136
       end
       object bbSair: TBitBtn
         Left = 761
@@ -602,7 +614,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       object pRiscoBotoes: TPanel
         Left = 108
         Top = 0
-        Width = 28
+        Width = 77
         Height = 43
         Align = alLeft
         BevelKind = bkSoft
@@ -1514,5 +1526,13 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       FieldName = 'EnviadoParaCartorio'
       Size = 3
     end
+  end
+  object dsPessoa: TDataSource
+    Left = 552
+    Top = 256
+  end
+  object dsPrazoPagamento: TDataSource
+    Left = 552
+    Top = 344
   end
 end
