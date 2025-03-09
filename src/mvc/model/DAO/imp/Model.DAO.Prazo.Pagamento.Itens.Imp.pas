@@ -12,11 +12,13 @@ interface
 
 uses
   Data.DB,
+  Vcl.Dialogs,
+  System.SysUtils,
 
   Model.DAO.Prazo.Pagamento.Itens.Interfaces,
   Model.Entidade.Prazo.Pagamento.Itens.Interfaces,
   Model.Conexao.Firedac.Interfaces,
-  Model.Conexao.Query.Interfaces, Vcl.Dialogs, System.SysUtils;
+  Model.Conexao.Query.Interfaces;
 
 type
   TDAOPrazoPagamentoItens = class(TInterfacedObject, iDAOPrazoPagamentoItens)
@@ -121,9 +123,7 @@ begin
     FDataSet := FQuery
                   .SQL(FCalcularDataVencimento)
                     .Add('where ipp.codigo=:Id')
-                    //.Add('and ipp.num_pgto=:NumeroPagamento')
                     .Params('Id', FPrazoPagamentoItens.Id)
-                    //.Params('NumeroPagamento', FPrazoPagamentoItens.NumeroPagamento)
                   .Open
                   .DataSet;
   if not FDataSet.IsEmpty then

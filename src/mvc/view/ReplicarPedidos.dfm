@@ -371,12 +371,14 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             Expanded = False
             FieldName = 'idproduto'
             Title.Caption = 'Id Produto:'
+            Width = 58
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'nomeproduto'
             Title.Caption = 'Nome Produto:'
+            Width = 223
             Visible = True
           end
           item
@@ -389,6 +391,14 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             Expanded = False
             FieldName = 'codigocor'
             Title.Caption = 'Id Cor:'
+            Width = 37
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'nomecor'
+            Title.Caption = 'Cor:'
+            Width = 124
             Visible = True
           end
           item
@@ -396,6 +406,13 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             FieldName = 'codigoacessorio'
             Title.Caption = 'Id Acess'#243'rio:'
             Width = 67
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'nomeacessorio'
+            Title.Caption = 'Acess'#243'rio:'
+            Width = 136
             Visible = True
           end
           item
@@ -408,7 +425,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             Expanded = False
             FieldName = 'valorproduto'
             Title.Caption = 'Valor produto:'
-            Width = 81
+            Width = 72
             Visible = True
           end
           item
@@ -480,7 +497,8 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           item
             Expanded = False
             FieldName = 'NumeroPagamento'
-            Title.Caption = 'N'#186' Pagamento:'
+            Title.Caption = 'N'#186' Pgto:'
+            Width = 46
             Visible = True
           end
           item
@@ -493,6 +511,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             Expanded = False
             FieldName = 'ValorParcela'
             Title.Caption = 'Valor parcela:'
+            Width = 69
             Visible = True
           end
           item
@@ -986,10 +1005,22 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       FieldName = 'codigocor'
       Size = 5
     end
+    object cdsPedidoItensnomecor: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'nomecor'
+      Size = 30
+      Calculated = True
+    end
     object cdsPedidoItenscodigoacessorio: TStringField
       DisplayWidth = 12
       FieldName = 'codigoacessorio'
       Size = 5
+    end
+    object cdsPedidoItensnomeacessorio: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'nomeacessorio'
+      Size = 30
+      Calculated = True
     end
     object cdsPedidoItensnumeropedido: TStringField
       DisplayWidth = 11
@@ -1072,7 +1103,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       DisplayWidth = 10
       FieldName = 'valorproduto'
       DisplayFormat = '#.##0.00'
-      EditFormat = '#.##0.00'
     end
     object cdsPedidoItenssubtotalproduto: TCurrencyField
       DisplayWidth = 12
@@ -1217,6 +1247,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       FieldName = 'id'
     end
     object cdsPedidosIdEmpresa: TStringField
+      Alignment = taRightJustify
       FieldName = 'IdEmpresa'
       Size = 5
     end
@@ -1235,18 +1266,22 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       Size = 5
     end
     object cdsPedidosIdRepresentante: TStringField
+      Alignment = taRightJustify
       FieldName = 'IdRepresentante'
       Size = 5
     end
     object cdsPedidosIdTransporte: TStringField
+      Alignment = taRightJustify
       FieldName = 'IdTransporte'
       Size = 5
     end
     object cdsPedidosIdRedespacho: TStringField
+      Alignment = taRightJustify
       FieldName = 'IdRedespacho'
       Size = 5
     end
     object cdsPedidosIdPagamento: TStringField
+      Alignment = taRightJustify
       FieldName = 'IdPagamento'
       Size = 5
     end

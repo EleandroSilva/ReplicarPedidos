@@ -1,3 +1,11 @@
+{*******************************************************}
+{                      Be More Web                      }
+{          Início do projeto 23/04/2025 12:02           }
+{                 www.bemoreweb.com.br                  }
+{                     (17)98169-5336                    }
+{                        2003/2025                      }
+{         Analista desenvolvedor (Eleandro Silva)       }
+{*******************************************************}
 unit Model.DAO.Pedidos.Itens.Imp;
 
 interface
@@ -25,7 +33,6 @@ type
       FIdPedidoAtual : Integer;
 
       function LoopRegistro(Value : Integer): Integer;
-      function GenIdAtual: Integer;
       const
       FSQL=('select '+
             'ip.cod_ped       as idpedido, '+
@@ -91,6 +98,7 @@ type
       function Put                                   : iDAOPedidosItens; overload;
       function Put(Id : Variant)                     : iDAOPedidosItens; overload;
       function Delete                                : iDAOPedidosItens;
+      function GenIdAtual                            : Integer;
 
       function QuantidadeRegistro : Integer;
       function This : iEntidadePedidosItens<iDAOPedidosItens>;
@@ -381,7 +389,7 @@ begin
       .Params('FundoPreto'             , FPedidosItens.FundoPreto)
       .ExecSQL;
 
-      //FConexao.Commit;
+      FConexao.Commit;
       //ShowMessage('Registro pedido itens replicado com ID: ' + FPedidosItens.IdPedido);
   except
     on E: Exception do

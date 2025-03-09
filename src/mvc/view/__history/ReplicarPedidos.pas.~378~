@@ -1,6 +1,6 @@
 {*******************************************************}
 {                      Be More Web                      }
-{          In√≠cio do projeto 23/04/2025 12:02           }
+{          InÌcio do projeto 23/04/2025 12:02           }
 {                 www.bemoreweb.com.br                  }
 {                     (17)98169-5336                    }
 {                        2003/2025                      }
@@ -227,6 +227,8 @@ type
     dsPrazoPagamento: TDataSource;
     lPedidos: TLabel;
     cdsPedidoItensnomeproduto: TStringField;
+    cdsPedidoItensnomecor: TStringField;
+    cdsPedidoItensnomeacessorio: TStringField;
 
 
     procedure FormCreate(Sender: TObject);
@@ -277,6 +279,9 @@ type
     procedure IncluirPedido;
     procedure PostPedido;
 
+    procedure FormatarValoresPedido;
+    procedure FormatarValoresPedidoItens;
+    procedure FormatarValoresPedidoPagametos;
     //Gerando Itens do pedido selecionado.
     procedure IncluiPedidoItens;
     procedure PostPedidoItens;
@@ -310,6 +315,25 @@ uses
 {$R *.dfm}
 
 { TfrmReplicarPedidos }
+
+procedure TfrmReplicarPedidos.FormatarValoresPedido;
+begin
+  TNumericField(dsPedidos.DataSet.FieldByName('TotalPedido')).DisplayFormat := '#,##0.00';
+  TNumericField(dsPedidos.DataSet.FieldByName('SubTotal')).DisplayFormat := '#,##0.00';
+end;
+
+procedure TfrmReplicarPedidos.FormatarValoresPedidoItens;
+begin
+  TNumericField(DSPedidoItens.DataSet.FieldByName('ValorProduto')).DisplayFormat := '#,##0.00';
+  TNumericField(DSPedidoItens.DataSet.FieldByName('SubTotalProduto')).DisplayFormat := '#,##0.00';
+  TNumericField(DSPedidoItens.DataSet.FieldByName('Quantidade')).DisplayFormat := '#,##0.00';
+end;
+
+procedure TfrmReplicarPedidos.FormatarValoresPedidoPagametos;
+begin
+  TNumericField(DSPedidoPagamentos.DataSet.FieldByName('ValorTotal')).DisplayFormat := '#,##0.00';
+  TNumericField(DSPedidoPagamentos.DataSet.FieldByName('ValorParcela')).DisplayFormat := '#,##0.00';
+end;
 
 procedure TfrmReplicarPedidos.FormCreate(Sender: TObject);
 begin
@@ -496,7 +520,7 @@ begin
     end;
   except
     on E: Exception do
-      showmessage('Aten√ß√£o! Sistema n√£o ser√° encerrado!');
+      showmessage('AtenÁ„o! Sistema n„o ser· encerrado!');
   end;
 end;
 
@@ -526,7 +550,9 @@ begin
     DSPedidoPagamentos.DataSet.Close;
     DSPedidos.DataSet.Close;
     edtPesquisa.Clear;
-  end;
+  end
+  else
+    FormatarValoresPedido;
 end;
 
 procedure TfrmReplicarPedidos.btnFinalizarPedidoClick(Sender: TObject);
@@ -541,14 +567,14 @@ begin
 
   if FQuantideRegistro > 10 then
   begin
-    ShowMessage('Replica√ß√£o(√ß√µes) de pedidos n√£o pode ser maior que 10 pedidos, est√£o selecionados um total de-> '+lQuantidadeRegistro.Caption+'  Pedidos.'+#13+
-                'Replica√ß√£o de pedidos ser√° cancelada, favor informar no m√°ximo 10 pedidos.');
+    ShowMessage('ReplicaÁ„o(Áıes) de pedidos n„o pode ser maior que 10 pedidos, est„o selecionados um total de-> '+lQuantidadeRegistro.Caption+'  Pedidos.'+#13+
+                'ReplicaÁ„o de pedidos ser· cancelada, favor informar no m·ximo 10 pedidos.');
     DesabilitaNovaPessoa;
     DesabilitaNovoPagamento;
     Abort;
   end;
 
-  if MessageBox(handle, 'Deseja realmente fazer replica√ß√£o do(s) pedido(s) selecionados?', 'Aviso', mb_IconQuestion or mb_Yesno) = mrYes then
+  if MessageBox(handle, 'Deseja realmente fazer replicaÁ„o do(s) pedido(s) selecionados?', 'Aviso', mb_IconQuestion or mb_Yesno) = mrYes then
   begin
     FLista := TStringList.Create;
     FLista.Clear;
@@ -583,12 +609,12 @@ begin
       finally
         DesabilitaNovaPessoa;
         DesabilitaNovoPagamento;
-        ShowMessage('Replica√ß√£o(√ß√µes), efetuadas com sucesso. Quatidade de pedidos replicados-> '+lQuantidadeRegistro.Caption);
+        ShowMessage('ReplicaÁ„o(Áıes), efetuadas com sucesso. Quatidade de pedidos replicados-> '+lQuantidadeRegistro.Caption);
         edtPesquisa.Clear;
       end;
   end
   else
-     ShowMessage('A sua escolha foi n√£o fazer replica√ß√£o. Replica√ß√£o ser√° cancelada!');
+     ShowMessage('A sua escolha foi n„o fazer replicaÁ„o. ReplicaÁ„o ser· cancelada!');
 end;
 
 procedure TfrmReplicarPedidos.IncluirPedido;
@@ -1102,7 +1128,7 @@ begin
       lNomeNovoPagamento.Caption := dsPrazoPagamento.DataSet.FieldByName('descricao').AsString;
     end
     else
-      ShowMessage('Registro n√£o encontrado. Tecla F1 busca pesquisar clientes!');
+      ShowMessage('Registro n„o encontrado. Tecla F1 busca pesquisar clientes!');
 end;
 
 procedure TfrmReplicarPedidos.edtNovoPagamentoKeyDown(Sender: TObject;
@@ -1143,7 +1169,7 @@ begin
       FIdRepresentante := dsPessoa.DataSet.FieldByName('IdRepresentante').AsString;
     end
     else
-      ShowMessage('Registro n√£o encontrado. Tecla F1 busca pesquisar clientes!');
+      ShowMessage('Registro n„o encontrado. Tecla F1 busca pesquisar clientes!');
 end;
 
 procedure TfrmReplicarPedidos.edtNovoClienteKeyDown(Sender: TObject;

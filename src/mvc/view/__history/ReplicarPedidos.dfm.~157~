@@ -53,7 +53,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             Expanded = False
             FieldName = 'id'
             Title.Caption = 'Id Pedido:'
-            Width = 60
+            Width = 51
             Visible = True
           end
           item
@@ -81,32 +81,20 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             Expanded = False
             FieldName = 'DataCadastro'
             Title.Caption = 'Data da emiss'#227'o:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'HoraCadastro'
-            Title.Caption = 'Hora da emiss'#227'o:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'CFOP'
-            Title.Caption = 'CFOP:'
+            Width = 86
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'IdRepresentante'
             Title.Caption = 'Id Representante:'
-            Width = 48
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'IdPagamento'
             Title.Caption = 'Id Pagamento:'
-            Width = 48
+            Width = 79
             Visible = True
           end
           item
@@ -117,62 +105,16 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           end
           item
             Expanded = False
-            FieldName = 'pagocom'
-            Title.Caption = 'Pago com:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'TipoPagamento'
-            Title.Caption = 'Tipo pagamento:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'TomadaNFe'
-            Title.Caption = 'Tomada NFe:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'aliquotacomissao'
-            Title.Caption = '% Comiss'#227'o:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'aliquotadesconto'
-            Title.Caption = '% Desconto:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'aliquotafrete'
-            Title.Caption = '% Frete:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'aliquotanfe'
-            Title.Caption = '% NFe:'
-            Visible = True
-          end
-          item
-            Expanded = False
             FieldName = 'subtotal'
             Title.Caption = 'R$ Sub total:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'valoroutrasdespesas'
-            Title.Caption = 'R$ Outras despesas:'
+            Width = 74
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'totalpedido'
             Title.Caption = 'R$ Total pedido:'
+            Width = 89
             Visible = True
           end
           item
@@ -183,56 +125,8 @@ object frmReplicarPedidos: TfrmReplicarPedidos
           end
           item
             Expanded = False
-            FieldName = 'valorreceber'
-            Title.Caption = 'R$ Receber:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'pesoliquido'
-            Title.Caption = 'Peso l'#237'quido:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'pesobruto'
-            Title.Caption = 'Peso bruto:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'qtdevolume'
-            Title.Caption = 'Qtde volume:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'totalcubico'
-            Title.Caption = 'Total c'#250'bico:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'obs'
-            Title.Caption = 'Obs:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'obspedido'
-            Title.Caption = 'Obs pedido:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'frete'
-            Title.Caption = 'Frete por:'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'nomeusuario'
-            Title.Caption = 'Nome usu'#225'rio:'
+            FieldName = 'pagocom'
+            Title.Caption = 'Pago com:'
             Visible = True
           end>
       end
@@ -277,7 +171,6 @@ object frmReplicarPedidos: TfrmReplicarPedidos
             Align = alLeft
             Caption = 'Alterar Pagamento:'
             TabOrder = 0
-            Visible = False
             OnClick = btnNovoPagamentoClick
           end
           object pNovoPagamento: TPanel
@@ -415,15 +308,16 @@ object frmReplicarPedidos: TfrmReplicarPedidos
     object pPedidoItens: TPanel
       Left = 0
       Top = 233
-      Width = 715
+      Width = 644
       Height = 225
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
+      ExplicitWidth = 715
       object lPedidoItens: TLabel
         Left = 0
         Top = 0
-        Width = 715
+        Width = 644
         Height = 39
         Align = alTop
         Alignment = taCenter
@@ -441,7 +335,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       object dbgPedidoItens: TDBGrid
         Left = 0
         Top = 39
-        Width = 715
+        Width = 644
         Height = 186
         Margins.Left = 10
         Margins.Top = 10
@@ -459,12 +353,93 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
         OnDrawColumnCell = dbgPedidoItensDrawColumnCell
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'idpedido'
+            Title.Caption = 'Id Pedido:'
+            Width = 51
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'item'
+            Title.Caption = 'Item:'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'idproduto'
+            Title.Caption = 'Id Produto:'
+            Width = 58
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'nomeproduto'
+            Title.Caption = 'Nome Produto:'
+            Width = 223
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'idtamanho'
+            Title.Caption = 'Id Tamanho:'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'codigocor'
+            Title.Caption = 'Id Cor:'
+            Width = 37
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'nomecor'
+            Title.Caption = 'Cor:'
+            Width = 124
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'codigoacessorio'
+            Title.Caption = 'Id Acess'#243'rio:'
+            Width = 67
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'nomeacessorio'
+            Title.Caption = 'Acess'#243'rio:'
+            Width = 136
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'quantidade'
+            Title.Caption = 'Quantidade:'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'valorproduto'
+            Title.Caption = 'Valor produto:'
+            Width = 72
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'subtotalproduto'
+            Title.Caption = 'Sub total produto:'
+            Visible = True
+          end>
       end
     end
     object pPedidoPagamentos: TPanel
-      Left = 719
+      Left = 648
       Top = 233
-      Width = 405
+      Width = 476
       Height = 225
       Align = alRight
       BevelOuter = bvNone
@@ -472,7 +447,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       object Label2: TLabel
         Left = 0
         Top = 0
-        Width = 405
+        Width = 476
         Height = 39
         Align = alTop
         Alignment = taCenter
@@ -488,7 +463,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       object dbgPedidoPagamento: TDBGrid
         Left = 0
         Top = 39
-        Width = 405
+        Width = 476
         Height = 186
         Margins.Left = 10
         Margins.Top = 10
@@ -505,10 +480,48 @@ object frmReplicarPedidos: TfrmReplicarPedidos
         TitleFont.Name = 'Tahoma'
         TitleFont.Style = []
         OnDrawColumnCell = dbgPedidoPagamentoDrawColumnCell
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'IdPedido'
+            Title.Caption = 'Id Pedido:'
+            Width = 51
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'IdPagamento'
+            Title.Caption = 'Id Pagamento:'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'NumeroPagamento'
+            Title.Caption = 'N'#186' Pagamento:'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DataVencimento'
+            Title.Caption = 'Data Vencimento:'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ValorParcela'
+            Title.Caption = 'Valor parcela:'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'QuantidadedeDias'
+            Title.Caption = 'Qtde de Dias:'
+            Visible = True
+          end>
       end
     end
     object pRisco: TPanel
-      Left = 715
+      Left = 644
       Top = 233
       Width = 4
       Height = 225
@@ -517,6 +530,7 @@ object frmReplicarPedidos: TfrmReplicarPedidos
       Color = clBackground
       ParentBackground = False
       TabOrder = 3
+      ExplicitLeft = 715
     end
     object Panel1: TPanel
       Left = 0
@@ -952,143 +966,208 @@ object frmReplicarPedidos: TfrmReplicarPedidos
     Left = 174
     Top = 360
     object cdsPedidoItensidpedido: TStringField
+      DisplayWidth = 6
       FieldName = 'idpedido'
       Size = 5
     end
     object cdsPedidoItensitem: TIntegerField
+      DisplayWidth = 4
       FieldName = 'item'
     end
     object cdsPedidoItensidproduto: TIntegerField
+      DisplayWidth = 10
       FieldName = 'idproduto'
     end
+    object cdsPedidoItensnomeproduto: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'nomeproduto'
+      Size = 60
+      Calculated = True
+    end
     object cdsPedidoItensidtamanho: TIntegerField
+      DisplayWidth = 10
       FieldName = 'idtamanho'
     end
     object cdsPedidoItenscodigoproduto: TStringField
+      DisplayWidth = 11
       FieldName = 'codigoproduto'
       Size = 5
     end
     object cdsPedidoItenscodigobarra: TStringField
+      DisplayWidth = 9
       FieldName = 'codigobarra'
       Size = 5
     end
     object cdsPedidoItenscodigocor: TStringField
+      DisplayWidth = 7
       FieldName = 'codigocor'
       Size = 5
     end
+    object cdsPedidoItensnomecor: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'nomecor'
+      Size = 30
+      Calculated = True
+    end
     object cdsPedidoItenscodigoacessorio: TStringField
+      DisplayWidth = 12
       FieldName = 'codigoacessorio'
       Size = 5
     end
+    object cdsPedidoItensnomeacessorio: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'nomeacessorio'
+      Size = 30
+      Calculated = True
+    end
     object cdsPedidoItensnumeropedido: TStringField
+      DisplayWidth = 11
       FieldName = 'numeropedido'
       Size = 5
     end
     object cdsPedidoItenscodigotamanho: TStringField
+      DisplayWidth = 12
       FieldName = 'codigotamanho'
       Size = 5
     end
     object cdsPedidoItensean13: TStringField
+      DisplayWidth = 13
       FieldName = 'ean13'
       Size = 13
     end
     object cdsPedidoItensean23: TStringField
+      DisplayWidth = 23
       FieldName = 'ean23'
       Size = 23
     end
     object cdsPedidoItenscfop: TStringField
+      DisplayWidth = 5
       FieldName = 'cfop'
       Size = 5
     end
     object cdsPedidoItenscst: TStringField
+      DisplayWidth = 3
       FieldName = 'cst'
       Size = 3
     end
     object cdsPedidoItenscf: TStringField
+      DisplayWidth = 1
       FieldName = 'cf'
       Size = 1
     end
     object cdsPedidoItensaliquotacomissao: TCurrencyField
+      DisplayWidth = 13
       FieldName = 'aliquotacomissao'
     end
     object cdsPedidoItensaliquotaicms: TCurrencyField
+      DisplayWidth = 10
       FieldName = 'aliquotaicms'
     end
     object cdsPedidoItensaliquotaipi: TCurrencyField
+      DisplayWidth = 10
       FieldName = 'aliquotaipi'
     end
     object cdsPedidoItensaliquotavincicms: TCurrencyField
+      DisplayWidth = 12
       FieldName = 'aliquotavincicms'
     end
     object cdsPedidoItensaliquotavinciss: TCurrencyField
+      DisplayWidth = 11
       FieldName = 'aliquotavinciss'
     end
     object cdsPedidoItensaliquotadesconto: TCurrencyField
+      DisplayWidth = 13
       FieldName = 'aliquotadesconto'
     end
     object cdsPedidoItensaliquotadescontopedido: TCurrencyField
+      DisplayWidth = 19
       FieldName = 'aliquotadescontopedido'
     end
     object cdsPedidoItensvalortabela: TCurrencyField
+      DisplayWidth = 10
       FieldName = 'valortabela'
     end
     object cdsPedidoItensquantidade: TCurrencyField
+      DisplayWidth = 10
       FieldName = 'quantidade'
+      DisplayFormat = '#.##0.00'
+      EditFormat = '#.##0.00'
     end
     object cdsPedidoItensvalorcusto: TCurrencyField
+      DisplayWidth = 10
       FieldName = 'valorcusto'
     end
     object cdsPedidoItensvalorproduto: TCurrencyField
+      DisplayWidth = 10
       FieldName = 'valorproduto'
+      DisplayFormat = '#.##0.00'
     end
     object cdsPedidoItenssubtotalproduto: TCurrencyField
+      DisplayWidth = 12
       FieldName = 'subtotalproduto'
+      DisplayFormat = '#.##0.00'
+      EditFormat = '#.##0.00'
     end
     object cdsPedidoItensvalordescontoproduto: TCurrencyField
+      DisplayWidth = 17
       FieldName = 'valordescontoproduto'
     end
     object cdsPedidoItensvalorportabela: TCurrencyField
+      DisplayWidth = 11
       FieldName = 'valorportabela'
     end
     object cdsPedidoItensvalortotalportabela: TCurrencyField
+      DisplayWidth = 15
       FieldName = 'valortotalportabela'
     end
     object cdsPedidoItensvalorfinalproduto: TCurrencyField
+      DisplayWidth = 13
       FieldName = 'valorfinalproduto'
     end
     object cdsPedidoItenslarguraproduto: TCurrencyField
+      DisplayWidth = 12
       FieldName = 'larguraproduto'
     end
     object cdsPedidoItenscomprimentoproduto: TCurrencyField
+      DisplayWidth = 16
       FieldName = 'comprimentoproduto'
     end
     object cdsPedidoItensespessuraproduto: TCurrencyField
+      DisplayWidth = 14
       FieldName = 'espessuraproduto'
     end
     object cdsPedidoItenspeca: TCurrencyField
+      DisplayWidth = 10
       FieldName = 'peca'
     end
     object cdsPedidoItenspesoproduto: TCurrencyField
+      DisplayWidth = 10
       FieldName = 'pesoproduto'
     end
     object cdsPedidoItenscubicoproduto: TCurrencyField
+      DisplayWidth = 11
       FieldName = 'cubicoproduto'
     end
     object cdsPedidoItenscancelado: TStringField
+      DisplayWidth = 8
       FieldName = 'cancelado'
       Size = 3
     end
     object cdsPedidoItenssaiudoestoque: TStringField
+      DisplayWidth = 11
       FieldName = 'saiudoestoque'
       Size = 3
     end
     object cdsPedidoItenscoug: TIntegerField
+      DisplayWidth = 10
       FieldName = 'coug'
     end
     object cdsPedidoItensproducao: TIntegerField
+      DisplayWidth = 10
       FieldName = 'producao'
     end
     object cdsPedidoItensfundopreto: TIntegerField
+      DisplayWidth = 10
       FieldName = 'fundopreto'
     end
   end
@@ -1435,8 +1514,8 @@ object frmReplicarPedidos: TfrmReplicarPedidos
     Active = True
     Aggregates = <>
     Params = <>
-    Left = 864
-    Top = 296
+    Left = 992
+    Top = 352
     object cdsPedidoPagamentosIdPedido: TIntegerField
       FieldName = 'IdPedido'
     end
@@ -1519,11 +1598,11 @@ object frmReplicarPedidos: TfrmReplicarPedidos
     end
   end
   object dsPessoa: TDataSource
-    Left = 552
-    Top = 256
+    Left = 472
+    Top = 352
   end
   object dsPrazoPagamento: TDataSource
-    Left = 552
-    Top = 344
+    Left = 576
+    Top = 352
   end
 end

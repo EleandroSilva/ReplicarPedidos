@@ -44,7 +44,9 @@ type
             'ip.COD_PRO       as codigoproduto, '+
             'ip.COD_BARRA     as codigobarra, '+
             'ip.COD_COR       as codigocor, '+
+            'cor.descricao    as nomecor, '+
             'ip.COD_ACER      as codigoacessorio, '+
+            'a.descricao      as nomeacessorio, '+
             'ip.NUM_PED       as numeropedido, '+
             'ip.COD_TAM       as codigotamanho, '+
             'ip.EAN_13        as ean13, '+
@@ -80,8 +82,10 @@ type
             'ip.PRODUCAO      as producao, '+
             'ip.F_PRETO       as fundopreto '+
             'from cad_item_ped ip '+
-            'inner join cad_pro pro on pro.id_pro = ip.id_pro '+
-            'left  join cad_tam tam on tam.id_tam = ip.id_tam '
+            'inner join cad_pro      pro on pro.id_pro      = ip.id_pro '+
+            'left  join cad_tam      tam on tam.id_tam      = ip.id_tam '+
+            'left  join cad_cores    cor on cor.cod_cor     = ip.cod_cor '+
+            'left  join cad_acessorios a on a.cod_acessorio = ip.cod_acer '
            );
     public
       constructor Create;

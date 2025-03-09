@@ -227,6 +227,8 @@ type
     dsPrazoPagamento: TDataSource;
     lPedidos: TLabel;
     cdsPedidoItensnomeproduto: TStringField;
+    cdsPedidoItensnomecor: TStringField;
+    cdsPedidoItensnomeacessorio: TStringField;
 
 
     procedure FormCreate(Sender: TObject);
@@ -277,6 +279,9 @@ type
     procedure IncluirPedido;
     procedure PostPedido;
 
+    procedure FormatarValoresPedido;
+    procedure FormatarValoresPedidoItens;
+    procedure FormatarValoresPedidoPagametos;
     //Gerando Itens do pedido selecionado.
     procedure IncluiPedidoItens;
     procedure PostPedidoItens;
@@ -310,6 +315,26 @@ uses
 {$R *.dfm}
 
 { TfrmReplicarPedidos }
+
+procedure TfrmReplicarPedidos.FormatarValoresPedido;
+begin
+  TNumericField(dsPedidos.DataSet.FieldByName('TotalPedido')).DisplayFormat := '#,##0.00';
+  TNumericField(dsPedidos.DataSet.FieldByName('SubTotal')).DisplayFormat := '#,##0.00';
+  TNumericField(dsPedidos.DataSet.FieldByName('ValorDesconto')).DisplayFormat := '#,##0.00';
+end;
+
+procedure TfrmReplicarPedidos.FormatarValoresPedidoItens;
+begin
+  TNumericField(DSPedidoItens.DataSet.FieldByName('ValorProduto')).DisplayFormat := '#,##0.00';
+  TNumericField(DSPedidoItens.DataSet.FieldByName('SubTotalProduto')).DisplayFormat := '#,##0.00';
+  TNumericField(DSPedidoItens.DataSet.FieldByName('Quantidade')).DisplayFormat := '#,##0.00';
+end;
+
+procedure TfrmReplicarPedidos.FormatarValoresPedidoPagametos;
+begin
+  TNumericField(DSPedidoPagamentos.DataSet.FieldByName('ValorTotal')).DisplayFormat := '#,##0.00';
+  TNumericField(DSPedidoPagamentos.DataSet.FieldByName('ValorParcela')).DisplayFormat := '#,##0.00';
+end;
 
 procedure TfrmReplicarPedidos.FormCreate(Sender: TObject);
 begin
@@ -398,7 +423,11 @@ begin
           .DataSet(DSPedidoItens)
           .GetbyId(dsPedidos.DataSet.FieldByName('codigopedido').AsString);
   if not dsPedidoItens.DataSet.IsEmpty then
-    Result := True else Result := False;
+  begin
+    Result := True;
+    FormatarValoresPedidoItens;
+  end
+  else Result := False;
 end;
 
 function TfrmReplicarPedidos.GetPedidoPagamentos: Boolean;
@@ -409,7 +438,12 @@ begin
           .DataSet(DSPedidoPagamentos)
           .GetbyId(dsPedidos.DataSet.FieldByName('codigopedido').AsString);
   if not dsPedidoPagamentos.DataSet.IsEmpty then
-    Result := True else Result := False;
+  begin
+    Result := True;
+    FormatarValoresPedidoPagametos;
+  end
+  else
+    Result := False;
 end;
 
 function TfrmReplicarPedidos.GetPessoa: Boolean;
@@ -526,7 +560,9 @@ begin
     DSPedidoPagamentos.DataSet.Close;
     DSPedidos.DataSet.Close;
     edtPesquisa.Clear;
-  end;
+  end
+  else
+    FormatarValoresPedido;
 end;
 
 procedure TfrmReplicarPedidos.btnFinalizarPedidoClick(Sender: TObject);
