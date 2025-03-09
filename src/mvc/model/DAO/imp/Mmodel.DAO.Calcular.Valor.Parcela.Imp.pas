@@ -77,6 +77,16 @@ type
                  'from Parcelas parc '+
                  'join SomaParcelas sp on parc.IdPedido = sp.IdPedido '
              );
+
+      FSQLPrazo= ('select distinct '+
+                   'ipp.codigo    as IdPagamento, '+
+                   'ipp.num_pgto  as NumeroPagamento, '+
+                   'ipp.qtde_dias as QuantidadedeDias, '+
+                   'pp.qtde_pgto  as QuantidadedePagamento '+
+                   'from cad_item_prazo ipp '+
+                   'inner join cad_prazo pp on pp.cod_prazo = ipp.codigo ');
+
+     function Somar(QtdeParcelas : Integer) : Currency;
    public
      constructor Create;
      destructor Destroy; override;
@@ -115,6 +125,7 @@ begin
   Result := Self.Create;
 end;
 
+
 function TDAOCalcularValorParcela.DataSet(DataSource: TDataSource): iDAOCalcularValorParcela;
 begin
   Result := Self;
@@ -129,18 +140,35 @@ begin
   Result := FDataSet;
 end;
 
+function TDAOCalcularValorParcela.Somar(QtdeParcelas : Integer) : Currency;
+begin
+  Result := 0;
+  Result := FCalcularValorParcela.ValorParcela * QtdeParcelas - FCalcularValorParcela.ValorTotalPedido;
+  if Result > 0 then
+    FCalcularValorParcela.ValorParcela(FCalcularValorParcela.ValorParcela - Result)
+  else
+  if Result < 0 then
+    FCalcularValorParcela.ValorParcela(FCalcularValorParcela.ValorParcela + Result);
+end;
+
 function TDAOCalcularValorParcela.CalcularValorParcela: iDAOCalcularValorParcela;
 begin
   Result := Self;
   try
     FDataSet := FQuery
-                  .SQL(FSQL)
-                    .Params('Id', FCalcularValorParcela.PrazoPagamentoItens.Id) // Parâmetro vindo do objeto
-                    .Params('IdPedido', FCalcularValorParcela.PrazoPagamentoItens.Pedidos.Id)
-                  .Open
-                  .DataSet;
+                   .SQL(FSQLPrazo)
+                     .Add('where ipp.codigo=:IdPagamento')
+                     .Params('IdPagamento', FCalcularValorParcela.PrazoPagamentoItens.Id)
+                   .Open
+                   .DataSet;
   if not FDataSet.IsEmpty then
-    FCalcularValorParcela.ValorParcela(FDataSet.FieldByName('ValorParcela').AsCurrency)
+  begin
+    FCalcularValorParcela
+                .ValorParcela(StrToFloat(FormatFloat('0.00',
+                         FCalcularValorParcela.ValorTotalPedido / FDataSet.FieldByName('QuantidadedePagamento').AsInteger)));
+    if FCalcularValorParcela.PrazoPagamentoItens.NumeroPagamento = 1 then
+      Somar(FDataSet.FieldByName('QuantidadedePagamento').AsInteger);
+    end
     else
     ShowMessage('Registro não encontrado, para calcular valor das parcelas!');
   except

@@ -226,6 +226,7 @@ type
     edtNovoPagamento: TEdit;
     dsPrazoPagamento: TDataSource;
     lPedidos: TLabel;
+    cdsPedidoItensnomeproduto: TStringField;
 
 
     procedure FormCreate(Sender: TObject);
@@ -263,6 +264,7 @@ type
     FDataSource       : TDataSource;
     FQuantideRegistro : Integer;
     FIdPagamento      : String;
+    FNovoIdPagamento  : String;
     FValorTotalPedido : Currency;
 
     function GetPedido           : Boolean;
@@ -469,6 +471,7 @@ procedure TfrmReplicarPedidos.DesabilitaNovoPagamento;
 begin
   edtNovoPagamento.Clear;
   pNovoPagamento.Visible := False;
+  FNovoIdPagamento :='';
 end;
 
 procedure TfrmReplicarPedidos.AbilitaNovoPagamento;
@@ -518,6 +521,7 @@ begin
   if not GetPedido then
   begin
     DesabilitaNovaPessoa;
+    DesabilitaNovoPagamento;
     DSPedidoItens.DataSet.Close;
     DSPedidoPagamentos.DataSet.Close;
     DSPedidos.DataSet.Close;
@@ -540,6 +544,7 @@ begin
     ShowMessage('Replicação(ções) de pedidos não pode ser maior que 10 pedidos, estão selecionados um total de-> '+lQuantidadeRegistro.Caption+'  Pedidos.'+#13+
                 'Replicação de pedidos será cancelada, favor informar no máximo 10 pedidos.');
     DesabilitaNovaPessoa;
+    DesabilitaNovoPagamento;
     Abort;
   end;
 
@@ -577,6 +582,7 @@ begin
       end;
       finally
         DesabilitaNovaPessoa;
+        DesabilitaNovoPagamento;
         ShowMessage('Replicação(ções), efetuadas com sucesso. Quatidade de pedidos replicados-> '+lQuantidadeRegistro.Caption);
         edtPesquisa.Clear;
       end;
@@ -910,62 +916,55 @@ procedure TfrmReplicarPedidos.IncluiPedidoPagamentos;
 var
   LItem       : Integer;
   LDataSource : TDataSource;
+  LValorParcela   : Currency;
 begin
   LDataSource := TDataSource.Create(nil);
-
-  FController
-    .FactoryDAO
-      .DAOPrazoPagamentoItens
-        .This
-          .Id(FIdPagamento)
-          .&End
-        .GetbyIdDataCalculada
-        .DataSet(lDataSource);
-
-
   FIdPedido:= StringOfChar('0', 5 - Length(FIdPedido)) + FIdPedido;
-  LDataSource := TDataSource.Create(nil);
   try
+    if FNovoIdPagamento='' then
+      FNovoIdPagamento := FIdPagamento;
+
     FController
-           .FactoryDAO
-             .DAOCalcularValorParcela
-               .This
-                 .ValorTotalPedido(FValorTotalPedido)
-                   .PrazoPagamentoItens
-                     .Id(FIdPagamento)
-                       .Pedidos.Id(StrToInt(FIdPedido))
-                       .&End
-                     .&End
-                    .&End
-                    .DataSet(LDataSource)
-                    .CalcularValorParcela;
+        .FactoryDAO
+          .DAOPrazoPagamentoItens
+            .This
+              .Id(FNovoIdPagamento)
+              .&End
+            .GetbyIdDataCalculada
+            .DataSet(lDataSource);
 
     LItem := 0;
-
-    FController
-       .FactoryDAO
-         .DAOPedidosPagamentos
-           .This
-             .CriarEstruturaCDS(cdsPedidoPagamentos)
-           .&End;
-
     LDataSource.DataSet.First;
     while not LDataSource.DataSet.Eof do
     begin
       LItem := LItem +1;
+      LValorParcela:=  FController
+                         .FactoryDAO
+                           .DAOCalcularValorParcela
+                             .This
+                               .ValorTotalPedido(FValorTotalPedido)
+                                 .PrazoPagamentoItens
+                                   .Id(FNovoIdPagamento)
+                                   .NumeroPagamento(LDataSource.DataSet.FieldByName('NumeroPagamento').AsInteger)
+                                   .&End
+                                 .&End
+                             .CalcularValorParcela
+                             .This
+                             .ValorParcela;
+
       cdsPedidoPagamentos.Append;
       cdsPedidoPagamentos.FieldByName('IdPedido')           .AsInteger   := StrToInt(FIdPedido);
       cdsPedidoPagamentos.FieldByName('IdPed')              .AsInteger   := StrToInt(FIdPedido);
       cdsPedidoPagamentos.FieldByName('CodigoPedido')       .Asstring    := FIdPedido;
-      cdsPedidoPagamentos.FieldByName('IdPagamento')        .Asstring    := LDataSource.DataSet.FieldByName('IdPagamento')     .AsString;
+      cdsPedidoPagamentos.FieldByName('IdPagamento')        .Asstring    := FIdPagamento;
       cdsPedidoPagamentos.FieldByName('Item')               .AsInteger   := LItem;
       cdsPedidoPagamentos.FieldByName('NumeroPagamento')    .AsInteger   := LDataSource.DataSet.FieldByName('NumeroPagamento') .AsInteger;
-      cdsPedidoPagamentos.FieldByName('DataVencimento')     .AsDateTime  := LDataSource.DataSet.FieldByName('DataVencimento')  .AsDateTime;
+      cdsPedidoPagamentos.FieldByName('DataVencimento')     .AsDateTime  := LDataSource.DataSet.FieldByName('DataVencimento') .AsDateTime;
       cdsPedidoPagamentos.FieldByName('ParcelaNova')        .AsString    := 'NAO';
       cdsPedidoPagamentos.FieldByName('EmitiuBoleto')       .Asstring    := 'NAO';
       cdsPedidoPagamentos.FieldByName('NumeroBanco')        .Asstring    := '999';
-      cdsPedidoPagamentos.FieldByName('ValorTotal')         .AsCurrency  := LDataSource.DataSet.FieldByName('ValorTotalPedido').AsCurrency;
-      cdsPedidoPagamentos.FieldByName('ValorParcela')       .AsCurrency  := LDataSource.DataSet.FieldByName('ValorParcela')    .AsCurrency;
+      cdsPedidoPagamentos.FieldByName('ValorTotal')         .AsCurrency  := FValorTotalPedido;
+      cdsPedidoPagamentos.FieldByName('ValorParcela')       .AsCurrency  := LValorParcela;
       cdsPedidoPagamentos.FieldByName('QuantidadedeDias')   .AsInteger   := LDataSource.DataSet.FieldByName('QuantidadedeDias').AsInteger;
       cdsPedidoPagamentos.FieldByName('PagouComo')          .Asstring    := 'B';
       cdsPedidoPagamentos.FieldByName('PagouComissao')      .Asstring    := 'NAO';
@@ -983,7 +982,6 @@ begin
     PostPedidoPagamentos;
     FreeAndNil(LDataSource);
   end;
-
 end;
 
 procedure TfrmReplicarPedidos.PostPedidoPagamentos;
@@ -1100,7 +1098,7 @@ begin
     if GetPrazoPagamento then
     begin
       edtNovoPagamento.Text := StringOfChar('0', 5 - Length(edtNovoPagamento.Text)) + edtNovoPagamento.Text;
-      FIdPagamento := edtNovoPagamento.Text;
+      FNovoIdPagamento := edtNovoPagamento.Text;
       lNomeNovoPagamento.Caption := dsPrazoPagamento.DataSet.FieldByName('descricao').AsString;
     end
     else

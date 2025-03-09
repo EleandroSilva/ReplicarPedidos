@@ -237,3 +237,8 @@ Unexpected end of command - line 1, column 29
 07/03/2025 - Caption: frmViewPesquisarPagamento
 07/03/2025 - Erro: EDatabaseError
 07/03/2025 - Erro: Field 'IdPagamento' not found
+09/03/2025 - ===================================================
+09/03/2025 - Form: frmReplicarPedidos
+09/03/2025 - Caption: 
+09/03/2025 - Erro: EDatabaseError
+09/03/2025 - Erro: Field 'ValorTotalPedido' not found

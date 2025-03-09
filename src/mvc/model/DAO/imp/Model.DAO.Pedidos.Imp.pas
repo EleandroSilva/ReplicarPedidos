@@ -85,7 +85,7 @@ type
             'when 11 then ''8'' '+
             'when 12 then ''P'' '+
             'when 13 then ''9'' '+
-            'end as PagCom, '+
+            'end as PagoCom, '+
             'p.tomada            as tomadanfe, '+
             'p.perc_com          as aliquotacomissao, '+
             'p.perc_desc         as aliquotadesconto, '+
